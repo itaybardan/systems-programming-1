@@ -1,2 +1,0 @@
-CMakeLists.txt not found in C:\Users\itay\Desktop\BGU\Semester C\system-programing\assignments\system-programming-assignment-1 Select CMakeLists.txt
-Toolchains are not configured Configure Disable profile
