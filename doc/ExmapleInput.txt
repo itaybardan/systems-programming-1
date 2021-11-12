@@ -1,7 +1,7 @@
 # Number of trainers
 4
 
-# Traines
+# Trainees
 6,6,8,4
 
 # Work Options
