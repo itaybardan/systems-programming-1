@@ -26,7 +26,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # These files will have .d instead of .o as the output.
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 
-all: $(BIN_DIR)/$(TARGET_EXEC) clean
+all: $(BIN_DIR)/$(TARGET_EXEC)
 
 # The final build step.
 $(BIN_DIR)/$(TARGET_EXEC): $(OBJS)
@@ -41,7 +41,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 
 .PHONY: clean
 clean:
-	rm -r $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)
+	rm -rf ${BIN_DIR}
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
