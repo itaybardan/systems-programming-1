@@ -23,6 +23,7 @@ private:
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
+    void parseConfigFile(const std::string &configFilePath);
 };
 
 #endif
