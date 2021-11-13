@@ -12,9 +12,10 @@ int Studio::getNumOfTrainers() const {
     return -1;
 }
 
+//returns a pointer to the trainer in the vector "trainers".
+//assumption: trainers id starts from zero.
 Trainer *Studio::getTrainer(int tid) {
-    Trainer *t = new Trainer(tid);
-    return t;
+    return trainers[tid];
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
