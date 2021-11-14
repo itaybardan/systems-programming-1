@@ -17,18 +17,15 @@ void Order::act(Studio &studio) {
             tempTrainer->order(tempTrainer->getCustomers()[i]->getId(),
                                tempTrainer->getCustomers()[i]->order(studio.getWorkoutOptions()),
                                studio.getWorkoutOptions())
-
         }
+        //call BaseAction function complete to change status to COMPLETE
+        complete();
     }
-
-
-
-    //call complete function of BaseAction
-    complete()
 }
 
 }
+
 
 std::string Order::toString() const {
-    return std::string();
+    return "Trainer made an order from his customers;
 }
