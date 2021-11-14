@@ -42,8 +42,8 @@ private:
 class Order : public BaseAction {
 public:
     Order(int id);
-    void act(Studio &studio);
-    std::string toString() const;
+    void act(Studio &studio) override;
+    std::string toString() const override;
 private:
     const int trainerId;
 };
