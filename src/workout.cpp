@@ -21,3 +21,8 @@ WorkoutType Workout::getType() const {
     WorkoutType *empty = new WorkoutType();
     return *empty;
 }
+
+Workout Workout::operator=(const Workout &other) {
+    auto *workout = new Workout(other.getId(), other.getName(), other.getPrice(), other.getType());
+    return *workout;
+}
