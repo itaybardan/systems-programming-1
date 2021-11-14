@@ -1,15 +1,15 @@
 #include "../include/trainer.h"
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
+Trainer::Trainer(int t_capacity) : open(false), capacity(t_capacity) {
 
 }
 
 int Trainer::getCapacity() const {
-    return -1;
+    return capacity;
 }
 
 void Trainer::addCustomer(Customer *customer) {
-
+    customersList.push_back(customer);
 }
 
 void Trainer::removeCustomer(int id) {
@@ -36,7 +36,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
 }
 
 void Trainer::openTrainer() {
-
+    open = true;
 }
 
 void Trainer::closeTrainer() {
@@ -48,5 +48,5 @@ int Trainer::getSalary() {
 }
 
 bool Trainer::isOpen() {
-    return false;
+    return open;
 }
