@@ -1,7 +1,8 @@
 #include "../include/studio.h"
 
+//need to implement builder
 Trainer::Trainer(int t_capacity) : open(false), capacity(t_capacity) {
-
+    capacity = 0;
 }
 
 int Trainer::getCapacity() const {
@@ -22,6 +23,7 @@ Customer *Trainer::getCustomer(int id) {
     for (int i = 0; i < customersList.size(); i++) {
         if(id == customersList[i]->getId())
             return customersList[i];
+        return nullptr;
     }
 }
 
@@ -37,10 +39,12 @@ std::vector <OrderPair> &Trainer::getOrders() {
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
                     const std::vector <Workout> &workout_options) {
-    for (int i = 0; i < workout_ids ; i++) {
+    for (int i = 0; i < workout_ids.size() ; i++) {
         //for now its the workout by ID or by workout type (im not sure), will change if needed.
-        orderList.push_back(std::pair<customer_id,workout_ids[i]);
-        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getType()::endl;
+//        OrderPair p = <customer_id,workout_ids[i]>;
+//        OrderPair = p<1,2>;
+//        orderList.push_back(p);
+        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getType() << std::endl;
     }
 }
 
