@@ -10,10 +10,12 @@ std::string Customer::toString() const {
     return std::string();
 }
 
+//returns the name of a given customer
 std::string Customer::getName() const {
-    return std::string();
+    return name;
 }
 
+//returns the ID of a given customer
 int Customer::getId() const {
-    return -1;
+    return id;
 }
