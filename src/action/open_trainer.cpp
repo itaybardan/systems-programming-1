@@ -27,6 +27,6 @@ void OpenTrainer::act(Studio &studio) {
 }
 
 std::string OpenTrainer::toString() const {
-    return "Trainer " + toString(trainerId) + " is open and added " + toString(customers.size()) +" customers";
+    return "Trainer " + std::to_string(trainerId) + " is open and added " + std::to_string(customers.size()) +" customers";
 
 }
