@@ -80,7 +80,7 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    return this->trainers.at(tid);
+    return trainers[tid];
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
