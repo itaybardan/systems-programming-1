@@ -10,6 +10,8 @@
 
 class Studio {
 public:
+    static std::map<std::string, int> OpenTrainerParamNameToIndex;
+
     Studio();
 
     Studio(const std::string &configFilePath);
@@ -33,6 +35,9 @@ private:
 
 std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath);
 
-std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter);
+std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter);
+
+std::map<std::string, int> Studio::OpenTrainerParamNameToIndex = {{"trainerId",     1},
+                                                          {"customersList", 2}};
 
 #endif
