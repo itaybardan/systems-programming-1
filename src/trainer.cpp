@@ -44,12 +44,14 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
     }
 }
 
+//opens a workout session of a given trainer
 void Trainer::openTrainer() {
     open = true;
 }
 
+//closes a workout session of a given trainer
 void Trainer::closeTrainer() {
-
+    open = false;
 }
 
 int Trainer::getSalary() {
