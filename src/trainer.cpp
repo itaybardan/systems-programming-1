@@ -23,7 +23,6 @@ Customer *Trainer::getCustomer(int id) {
         if(id == customersList[i]->getId())
             return customersList[i];
     }
-    return nullptr;
 }
 
 std::vector<Customer *> &Trainer::getCustomers() {
@@ -39,9 +38,9 @@ std::vector <OrderPair> &Trainer::getOrders() {
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
                     const std::vector <Workout> &workout_options) {
     for (int i = 0; i < workout_ids ; i++) {
-        //for now its the workout by ID, will change if needed.
+        //for now its the workout by ID or by workout type (im not sure), will change if needed.
         orderList.push_back(std::pair<customer_id,workout_ids[i]);
-        std::cout << static_cast<std::string>(getCustomer(customer_id)->getName())
+        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getType()::endl;
     }
 }
 
