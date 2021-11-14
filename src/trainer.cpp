@@ -1,18 +1,15 @@
 #include "../include/trainer.h"
 
-
-Trainer::Trainer(int t_capacity) : open(false), capacity(t_capacity) {
+Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 
 }
 
-//returns a specific trainer capacity.
 int Trainer::getCapacity() const {
-    return capacity;
+    return -1;
 }
 
-//adds a given customer to the customers List of a given trainer.
 void Trainer::addCustomer(Customer *customer) {
-    customersList.push_back(customer);
+
 }
 
 void Trainer::removeCustomer(int id) {
@@ -24,12 +21,12 @@ Customer *Trainer::getCustomer(int id) {
 }
 
 std::vector<Customer *> &Trainer::getCustomers() {
-    std::vector<Customer *> *empty;
+    auto *empty = new std::vector<Customer *>();
     return *empty;
 }
 
 std::vector <OrderPair> &Trainer::getOrders() {
-    std::vector<OrderPair> *empty;
+    auto *empty = new std::vector<OrderPair>();
     return *empty;
 }
 
@@ -38,10 +35,8 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
 
 }
 
-//open a workout session of a given trainer.
-//sets open val to true.
 void Trainer::openTrainer() {
-    open = true;
+
 }
 
 void Trainer::closeTrainer() {
@@ -52,7 +47,6 @@ int Trainer::getSalary() {
     return -1;
 }
 
-//returns the 'flag''s - open status
 bool Trainer::isOpen() {
-    return open;
+    return false;
 }
