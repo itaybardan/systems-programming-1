@@ -1,6 +1,6 @@
 #include "../include/trainer.h"
 
-Trainer::Trainer(int t_capacity) {
+Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 
 }
 
@@ -21,12 +21,12 @@ Customer *Trainer::getCustomer(int id) {
 }
 
 std::vector<Customer *> &Trainer::getCustomers() {
-    std::vector<Customer *> *empty;
+    auto *empty = new std::vector<Customer *>();
     return *empty;
 }
 
 std::vector <OrderPair> &Trainer::getOrders() {
-    std::vector<OrderPair> *empty;
+    auto *empty = new std::vector<OrderPair>();
     return *empty;
 }
 

@@ -1,5 +1,6 @@
 #include "../include/workout.h"
 
+
 Workout::Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type) : id(w_id), name(w_name),
                                                                                   price(w_price), type(w_type) {
     return;
@@ -22,7 +23,6 @@ WorkoutType Workout::getType() const {
     return *empty;
 }
 
-Workout Workout::operator=(const Workout &other) {
-    auto *workout = new Workout(other.getId(), other.getName(), other.getPrice(), other.getType());
-    return *workout;
+Workout &Workout::operator=(const Workout &other) {
+    return *this;
 }

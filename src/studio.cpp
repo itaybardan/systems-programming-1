@@ -23,39 +23,50 @@ std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const s
     std::string configLine;
     std::ifstream configFile(configFilePath);
     int numberOfTrainers = 0;
-    auto *trainers = new std::vector<Trainer *>();
+    auto trainers = new std::vector<Trainer *>();
     auto workouts = new std::vector<Workout>();
 
     while (std::getline(configFile, configLine)) {
         if (configLine == "# Number of trainers") {
-            while (std::getline(configFile, configLine) && configLine != "\n") {
-                configLine.erase(std::remove_if(configLine.begin(), configLine.end(), std::isspace), configLine.end());
+            while (std::getline(configFile, configLine) && !configLine.empty()) {
                 numberOfTrainers = std::stoi(configLine);
             }
         } else if (configLine == "# Traines") {
-            while (std::getline(configFile, configLine) && configLine != "\n") {
+            while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::vector<int> capacitiesOfTrainers;
                 std::stringstream stringStream(configLine);
-                while (stringStream.good()) {
-                    std::string substr;
-                    std::getline(stringStream, substr, ',');
-                    capacitiesOfTrainers.push_back(std::stoi(substr));
-                }
+                std::string delimiter = ",";
+                std::vector<std::string> *splitResults = splitByDelimiter(configLine, delimiter);
 
-                if (numberOfTrainers != capacitiesOfTrainers.size()) {
+                if (numberOfTrainers != static_cast<int>(splitResults->size())) {
                     std::cout << "Problem in the input configurations file. number of trainers does"
                                  " not match number of capacities" << std::endl;
                 } else {
-                    for (int capacity: capacitiesOfTrainers) {
-                        (*trainers).push_back(new Trainer(capacity));
+                    for (const std::string& capacity: (*splitResults)) {
+                        trainers->push_back(new Trainer(std::stoi(capacity)));
                     }
                 }
             }
         } else if (configLine == "# Work Options") {
-            while (std::getline(configFile, configLine) && configLine != "\n") {
-
+            std::vector<std::array<std::string, 3>> workoutsAttributes;
+            while (std::getline(configFile, configLine) && !configLine.empty()) {
+                std::array<std::string, 3> workoutAttributes;
+                std::stringstream stringStream(configLine);
+                std::string delimiter = ", ";
+                std::vector<std::string> *splitResults = splitByDelimiter(configLine, delimiter);
+                for (int i = 0; i < static_cast<int>(workoutAttributes.size()); i++) {
+                    workoutAttributes[i] = (*splitResults).at(i);
+                }
+                workoutsAttributes.push_back(workoutAttributes);
             }
-            std::cout << configLine << std::endl;
+            int id = 0;
+            for (std::array<std::string, 3> workoutAttributes: workoutsAttributes) {
+                std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(), workoutAttributes[1].begin(),
+                               [](unsigned char c) { return std::tolower(c); });
+                workouts->push_back(*(new Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
+                                                  WorkoutTypeResolver.find(workoutAttributes[1])->second)));
+                id++;
+            }
         }
 
     }
@@ -80,4 +91,17 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 std::vector<Workout> &Studio::getWorkoutOptions() {
     std::vector<Workout> *empty = new std::vector<Workout>();
     return *empty;
+}
+
+std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter) {
+    size_t pos = 0;
+    std::string substr;
+    auto *result = new std::vector<std::string>();
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        substr = s.substr(0, pos);
+        result->push_back(substr);
+        s.erase(0, pos + delimiter.length());
+    }
+    result->push_back(s);
+    return result;
 }

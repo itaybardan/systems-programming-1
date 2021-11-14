@@ -33,5 +33,6 @@ private:
 
 std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath);
 
+std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter);
 
 #endif
