@@ -1,4 +1,4 @@
-#include "../include/trainer.h"
+#include "../include/studio.h"
 
 Trainer::Trainer(int t_capacity) : open(false), capacity(t_capacity) {
 
@@ -16,7 +16,13 @@ void Trainer::removeCustomer(int id) {
 
 }
 
+//returns a customer pointer
+//not sure if i need to return by pointer or not
 Customer *Trainer::getCustomer(int id) {
+    for (int i = 0; i < customersList.size(); i++) {
+        if(id == customersList[i]->getId())
+            return customersList[i];
+    }
     return nullptr;
 }
 
@@ -25,14 +31,18 @@ std::vector<Customer *> &Trainer::getCustomers() {
     return *empty;
 }
 
+// returns the order list of a given trainer
 std::vector <OrderPair> &Trainer::getOrders() {
-    auto *empty = new std::vector<OrderPair>();
-    return *empty;
+    return orderList;
 }
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
                     const std::vector <Workout> &workout_options) {
-
+    for (int i = 0; i < workout_ids ; i++) {
+        //for now its the workout by ID, will change if needed.
+        orderList.push_back(std::pair<customer_id,workout_ids[i]);
+        std::cout << static_cast<std::string>(getCustomer(customer_id)->getName())
+    }
 }
 
 void Trainer::openTrainer() {
