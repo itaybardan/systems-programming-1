@@ -28,7 +28,7 @@ void Studio::start() {
             std::vector<std::string> *customersInfo = splitByDelimiter(
                     reinterpret_cast<std::string &>(Studio::OpenTrainerParamNameToIndex.find(
                             "customersList")->second), " ");
-            std::vector<Customer*> customers;
+            std::vector<Customer *> customers;
             int customerIdCounter = 0;
             for (std::string customerInfo: *customersInfo) {
                 std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
