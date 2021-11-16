@@ -32,6 +32,8 @@
 *.app
 # User-specific stuff
 
+bin/
+build/
 
 # CMake
 cmake-build-*/
