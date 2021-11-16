@@ -37,7 +37,5 @@ std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const s
 
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter);
 
-std::map<std::string, int> Studio::OpenTrainerParamNameToIndex = {{"trainerId",     1},
-                                                                  {"customersList", 2}};
 
 #endif

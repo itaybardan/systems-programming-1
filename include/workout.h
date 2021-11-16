@@ -32,7 +32,4 @@ private:
     const WorkoutType type;
 };
 
-std::map<std::string, WorkoutType> Workout::WorkoutTypeResolver = {{"anaerobic", WorkoutType::ANAEROBIC},
-                                                                   {"mixed",     WorkoutType::MIXED},
-                                                                   {"cardio",    WorkoutType::CARDIO}};
 #endif

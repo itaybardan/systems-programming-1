@@ -1,12 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <iterator>
 #include <sstream>
 #include <string>
 #include "../include/studio.h"
 #include <tuple>
 #include <algorithm>
+
+
+std::map<std::string, int> Studio::OpenTrainerParamNameToIndex = {{"trainerId",     1},
+                                                                  {"customersList", 2}};
 
 Studio::Studio(const std::string &configFilePath) : open(false), trainers(*(new std::vector<Trainer *>())),
                                                     workout_options() {
