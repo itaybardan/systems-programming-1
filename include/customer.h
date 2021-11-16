@@ -27,11 +27,13 @@ class SweatyCustomer : public Customer {
 public:
     SweatyCustomer(std::string name, int id);
 
-    std::vector<int> order(const std::vector <Workout> &workout_options);
+    std::vector<int> order(const std::vector <Workout> &workout_options) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
+    const std::string swt;
+    const int id;
 };
 
 
@@ -39,11 +41,13 @@ class CheapCustomer : public Customer {
 public:
     CheapCustomer(std::string name, int id);
 
-    std::vector<int> order(const std::vector <Workout> &workout_options);
+    std::vector<int> order(const std::vector <Workout> &workout_options) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
+    const std::string chp;
+    const int id;
 };
 
 
@@ -51,11 +55,13 @@ class HeavyMuscleCustomer : public Customer {
 public:
     HeavyMuscleCustomer(std::string name, int id);
 
-    std::vector<int> order(const std::vector <Workout> &workout_options);
+    std::vector<int> order(const std::vector <Workout> &workout_options) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
+    const std::string mcl;
+    const int id;
 };
 
 
@@ -63,11 +69,13 @@ class FullBodyCustomer : public Customer {
 public:
     FullBodyCustomer(std::string name, int id);
 
-    std::vector<int> order(const std::vector <Workout> &workout_options);
+    std::vector<int> order(const std::vector <Workout> &workout_options) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
+    const std::string fbd;
+    const int id;
 };
 
 

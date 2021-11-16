@@ -12,13 +12,13 @@ void OpenTrainer::act(Studio &studio) {
     //the if consists of three "ors":
     //check if the trainer's workout session is already open or there exists such trainer
     //or if there is spots in Trainer's capacity.
-    if (tempTrainer == nullptr || tempTrainer->isOpen() == true || customers.size() > tempTrainer->getCapacity())
+    if (tempTrainer == nullptr || tempTrainer->isOpen() == true || static_cast<int>(customers.size()) > tempTrainer->getCapacity())
         error("Workout session does not exist or is already open.");
     else {
         //open a workout session.
         tempTrainer->openTrainer();
         //update the customers vector
-        for (int (i) = 0; (i) < customers.size(); (i)++) {
+        for (int (i) = 0; (i) < static_cast<int>(customers.size()); (i)++) {
             tempTrainer->addCustomer(customers[i]);
         }
         // call the function complete in BaseAction.

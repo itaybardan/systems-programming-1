@@ -13,7 +13,7 @@ void Order::act(Studio &studio) {
         error("Trainer does not exist or is not open");
     } else {
         //taking orders from each customer
-        for (int i = 0; i < tempTrainer->getCustomers().size(); i++) {
+        for (int i = 0; i < static_cast<int>(tempTrainer->getCustomers().size()); i++) {
             tempTrainer->order(tempTrainer->getCustomers()[i]->getId(),
                                tempTrainer->getCustomers()[i]->order(studio.getWorkoutOptions()),
                                studio.getWorkoutOptions());

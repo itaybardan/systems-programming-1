@@ -1,8 +1,8 @@
 #include "../include/studio.h"
 
 //need to implement builder
-Trainer::Trainer(int t_capacity) : open(false), capacity(t_capacity) {
-    capacity = 0;
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), open(false) {
+
 }
 
 int Trainer::getCapacity() const {
@@ -20,32 +20,33 @@ void Trainer::removeCustomer(int id) {
 //returns a customer pointer
 //not sure if i need to return by pointer or not
 Customer *Trainer::getCustomer(int id) {
-    for (int i = 0; i < customersList.size(); i++) {
-        if(id == customersList[i]->getId())
+    int customersListSize = customersList.size();
+    for (int i = 0; i < customersListSize; i++) {
+        if (id == customersList[i]->getId())
             return customersList[i];
-        return nullptr;
     }
+    return nullptr;
 }
 
 std::vector<Customer *> &Trainer::getCustomers() {
-    auto *empty = new std::vector<Customer *>();
-    return *empty;
+    return customersList;
 }
 
 // returns the order list of a given trainer
-std::vector <OrderPair> &Trainer::getOrders() {
+std::vector<OrderPair> &Trainer::getOrders() {
     return orderList;
 }
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
-                    const std::vector <Workout> &workout_options) {
-    for (int i = 0; i < workout_ids.size() ; i++) {
+                    const std::vector<Workout> &workout_options) {
+    for (int i = 0; i < static_cast<int>(workout_ids.size()); i++) {
         //for now its the workout by ID or by workout type (im not sure), will change if needed.
-//        OrderPair p = <customer_id,workout_ids[i]>;
-//        OrderPair = p<1,2>;
-//        orderList.push_back(p);
-        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getType() << std::endl;
+        orderList.push_back(OrderPair(customer_id,workout_options[workout_ids[i]]));
+        //print the order list
+        //consider make a function Print in class Order
+        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getName() << std::endl;
     }
+    //need to delete OrderPairs
 }
 
 //opens a workout session of a given trainer

@@ -1,4 +1,5 @@
+//#include "../../include/customer.h"
 //
-// Created by itay on 12/11/2021.
+//FullBodyCustomer::FullBodyCustomer(std::string name, int id) : Customer(name, id), fbd(name),id(id){
 //
-
+//}
