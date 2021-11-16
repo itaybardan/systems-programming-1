@@ -2,9 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <sstream>
-#include <string>
 #include "../include/studio.h"
-#include <tuple>
 #include <algorithm>
 
 
@@ -13,29 +11,29 @@ std::map<std::string, int> Studio::OpenTrainerParamNameToIndex = {{"trainerId", 
 
 Studio::Studio(const std::string &configFilePath) : open(false), trainers(*(new std::vector<Trainer *>())),
                                                     workout_options() {
-    std::tuple<std::vector<Trainer *>, std::vector<Workout>> configOutput = parseConfigFile(configFilePath);
+    std::tuple <std::vector<Trainer *>, std::vector<Workout>> configOutput = parseConfigFile(configFilePath);
     this->trainers = std::get<0>(configOutput);
     this->workout_options = std::get<1>(configOutput);
+
 }
 
 void Studio::start() {
     this->open = true;
     std::cout << "Studio is now open" << std::endl;
     std::string inputLine;
-    std::cin >> inputLine;
+    getline(std::cin, inputLine);
     while (inputLine != "closeall") {
-        std::vector<std::string> *action = splitByDelimiter(inputLine, " ");
+        std::vector <std::string> *action = splitByDelimiter(inputLine, " ");
         std::string mainAction = action->at(0);
         if (mainAction == "open") {
-            std::vector<std::string> *customersInfo = splitByDelimiter(
-                    reinterpret_cast<std::string &>(Studio::OpenTrainerParamNameToIndex.find(
-                            "customersList")->second), " ");
-            std::vector<Customer *> customers;
+            std::vector <std::string> *customersInfo = splitByDelimiter(
+                    action->at(Studio::OpenTrainerParamNameToIndex.find("customersList")->second), " ");
+            std::vector < Customer * > customers;
             int customerIdCounter = 0;
             for (std::string customerInfo: *customersInfo) {
-                std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
+                std::vector <std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
                 if (customerInfoVector->at(1) == "swt") {
-                    //customers.push_back(new SweatyCustomer(customerInfoVector->at(0), customerIdCounter));
+                    customers.push_back(new SweatyCustomer(customerInfoVector->at(0), customerIdCounter));
                     customerIdCounter++;
                 }
                 delete customerInfoVector;
@@ -55,12 +53,12 @@ void Studio::start() {
 
         }
         delete action;
-        std::cin >> inputLine;
+        getline(std::cin, inputLine);
     }
 
 }
 
-std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath) {
+std::tuple <std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath) {
     std::string configLine;
     std::ifstream configFile(configFilePath);
     int numberOfTrainers = 0;
@@ -76,7 +74,7 @@ std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const s
             while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::vector<int> capacitiesOfTrainers;
                 std::stringstream stringStream(configLine);
-                std::vector<std::string> *splitResults = splitByDelimiter(configLine, ",");
+                std::vector <std::string> *splitResults = splitByDelimiter(configLine, ",");
 
                 if (numberOfTrainers != static_cast<int>(splitResults->size())) {
                     std::cout << "Problem in the input configurations file. number of trainers does"
@@ -89,11 +87,10 @@ std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const s
                 delete splitResults;
             }
         } else if (configLine == "# Work Options") {
-            std::vector<std::array<std::string, 3>> workoutsAttributes;
+            std::vector <std::array<std::string, 3>> workoutsAttributes;
             while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::array<std::string, 3> workoutAttributes;
-                std::stringstream stringStream(configLine);
-                std::vector<std::string> *splitResults = splitByDelimiter(configLine, ", ");
+                std::vector <std::string> *splitResults = splitByDelimiter(configLine, ", ");
                 for (int i = 0; i < static_cast<int>(workoutAttributes.size()); i++) {
                     workoutAttributes[i] = (*splitResults).at(i);
                 }
@@ -129,12 +126,12 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
     return *empty;
 }
 
-std::vector<Workout> &Studio::getWorkoutOptions() {
-    std::vector<Workout> *empty = new std::vector<Workout>();
+std::vector <Workout> &Studio::getWorkoutOptions() {
+    std::vector <Workout> *empty = new std::vector<Workout>();
     return *empty;
 }
 
-std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter) {
+std::vector <std::string> *splitByDelimiter(std::string &s, std::string delimiter) {
     size_t pos = 0;
     std::string substr;
     auto *result = new std::vector<std::string>();
