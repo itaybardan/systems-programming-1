@@ -27,7 +27,6 @@ void Studio::start() {
         std::vector<std::string> *action = splitByDelimiter(inputLine, " ");
         std::string mainAction = action->at(0);
         if (mainAction == "open") {
-            //int id = std::stoi(action->at(OpenTrainerParamNameToIndex.find("trainerId")->second));
             std::vector<std::string> *customersInfo = splitByDelimiter(
                     reinterpret_cast<std::string &>(Studio::OpenTrainerParamNameToIndex.find(
                             "customersList")->second), " ");
@@ -36,7 +35,7 @@ void Studio::start() {
             for (std::string customerInfo: *customersInfo) {
                 std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
                 if (customerInfoVector->at(1) == "swt") {
-                    //customers.push_back(new SweatyCustomer(customerInfoVector->at(0), customerIdCounter));
+                    customers.push_back(new SweatyCustomer(customerInfoVector->at(0), customerIdCounter));
                     customerIdCounter++;
                 }
                 delete customerInfoVector;
@@ -55,8 +54,8 @@ void Studio::start() {
         } else if (mainAction == "log") { ;
 
         }
-
         delete action;
+        std::cin >> inputLine;
     }
 
 }
