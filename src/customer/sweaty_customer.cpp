@@ -16,5 +16,5 @@ std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_optio
 }
 
 std::string SweatyCustomer::toString() const {
-    return "I am a sweaty customer"
+    return "I am a sweaty customer";
 }
