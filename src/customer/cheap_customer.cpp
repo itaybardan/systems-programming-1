@@ -5,10 +5,10 @@
 CheapCustomer::CheapCustomer(std::string name, int id) : Customer(name, id),chp(name), id(id) {
 
 }
-
+//not done
 std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_options) {
     std::vector<int> orders;
-    int min_id = INT_MAX;
+    int min_id;
     int min_price = INT_MAX;
     for(int i = 0 ; i < static_cast<int>(workout_options.size()) ; i++){
         // always take the smallest ID of the cheapest workout.
