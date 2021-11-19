@@ -52,8 +52,8 @@ private:
 class MoveCustomer : public BaseAction {
 public:
     MoveCustomer(int src, int dst, int customerId);
-    void act(Studio &studio);
-    std::string toString() const;
+    void act(Studio &studio) override;
+    std::string toString() const override;
 private:
     const int srcTrainer;
     const int dstTrainer;
