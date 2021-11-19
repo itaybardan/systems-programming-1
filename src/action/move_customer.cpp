@@ -32,10 +32,14 @@ void MoveCustomer::act(Studio &studio) {
         new_order_for_dst.act(studio);
     }
 
-    //if there are no customers left in origin trainer workout session, close it.
+    //if there are no customers left in origin trainer workout session, close it, using Close action.
     if (origin_trainer->getCustomers().empty()){
-        origin_trainer->closeTrainer();
+        Close close_session(srcTrainer);
+        close_session.act(studio);
     }
+
+    //call complete func of BaseAction
+    complete();
 }
 
 
