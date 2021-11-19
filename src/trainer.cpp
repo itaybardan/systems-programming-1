@@ -18,9 +18,11 @@ void Trainer::addCustomer(Customer *customer) {
 void Trainer::removeCustomer(int id) {
 //finding the customer in the vector
 std::vector<Customer*> temp_customers_list = this->customersList;
+//creating an iterator
 std::vector<Customer*>::iterator where_is_customer;
     for (int i = 0 ; i < static_cast<int>(temp_customers_list.size()) ; i++) {
         if(temp_customers_list[i]->getId() == id){
+            //update iterator
             where_is_customer = temp_customers_list.begin() + i;
         }
     }
