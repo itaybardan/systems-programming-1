@@ -8,13 +8,13 @@ void Close::act(Studio &studio) {
     Trainer *temp_trainer = studio.getTrainer(trainerId);
 
     //results in error if:
-    //      1. the trainer does not exists.
+    //      1. the trainer does not exist.
     //      2. this trainer's workout session is not open.
     if (trainerId > studio.getNumOfTrainers() || !temp_trainer->isOpen()) {
         error("Trainer does not exist or is not open");
     }
 
-    //prints: "Trainer 'id' close. Salary 'amount'NIS"
+    //prints: "Trainer 2 closed. Salary 740NIS"
     //print(trainerId,temp_trainer);  A CHANCE TO MAKE PRINT FUNCTION GOT AN ERROR IN THE HEADER FILE.
     std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
 
