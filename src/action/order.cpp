@@ -9,7 +9,7 @@ void Order::act(Studio &studio) {
     // a variable pointer of Trainer class to get his id
     Trainer *tempTrainer = studio.getTrainer(trainerId);
     //check if there exists a trainer or if the workout session of a given trainer is open
-    if (tempTrainer == nullptr || tempTrainer->isOpen() == false) {
+    if (tempTrainer == nullptr || !tempTrainer->isOpen()) {
         error("Trainer does not exist or is not open");
     } else {
         //taking orders from each customer
