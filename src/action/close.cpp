@@ -15,7 +15,8 @@ void Close::act(Studio &studio) {
     }
 
     //prints: "Trainer 'id' close. Salary 'amount'NIS"
-    print(trainerId,temp_trainer);
+    //print(trainerId,temp_trainer);  A CHANCE TO MAKE PRINT FUNCTION GOT AN ERROR IN THE HEADER FILE.
+    std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
 
     //closes this trainer workout session.
     temp_trainer->closeTrainer();
@@ -37,9 +38,9 @@ void Close::act(Studio &studio) {
 }
 
 //print function
-void print(const int trainerId, Trainer *temp_trainer) {
-    std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
-}
+//void print(const int trainerId, Trainer *temp_trainer) {
+//    std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
+//}
 
 std::string Close::toString() const {
     return "Closing a given trainer workout session and prints his current salary";
