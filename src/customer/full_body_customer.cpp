@@ -35,28 +35,46 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
     //pushing the most expensive MIXED workout.
     min_id = INT_MAX;
+    flag = true;
     for (int i = 0; i < static_cast<int>(workout_options.size()); i++) {
         if (workout_options[i].getType() == MIXED) {
             price = workout_options[i].getPrice();
-            // for the first index if its CARDIO
-            if (i == 0) {
+            // for the first index if its MIXED
+            if (flag) {
+                min_id = workout_options[i].getId();
+                max_price = workout_options[i].getPrice();
+                order_index = i;
+                flag = false;
+            } else if (min_id < workout_options[i].getId() && price == max_price) {
+                max_price = price;
+                min_id = workout_options[i].getId();
+                order_index = i;
+            }
+        }
+    }
+
+    //pushing the cheapest ANAEROBIC workout.
+    min_id = INT_MAX;
+    min_price = INT_MAX;
+    flag = true;
+    for (int i = last_index; i >= 0; i--) {
+        if (workout_options[i].getType() == ANAEROBIC) {
+            price = workout_options[i].getPrice();
+            // for the first index if its ANAEROBIC
+            if (flag) {
                 min_id = workout_options[i].getId();
                 min_price = workout_options[i].getPrice();
                 order_index = i;
+                flag = false;
             } else if (min_id < workout_options[i].getId() && price == min_price) {
                 min_price = price;
                 min_id = workout_options[i].getId();
                 order_index = i;
+                }
             }
-    }
-
-    //pushing the cheapest
-    min_id = INT_MAX;
-    for (int i = static_cast<int>(workout_options.size() - 1); i >= 0; i--) {
-        if (workout_options[i].getType() == ANAEROBIC) {
-            orders.push_back(workout_options[i].getId());
         }
-    }
+        // pushing the cheapest CARDIO workout.
+        orders.push_back(workout_options[order_index].getId());
 
 
 }
