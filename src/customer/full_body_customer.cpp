@@ -78,3 +78,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
 
 }
+
+std::string FullBodyCustomer::toString() const {
+    return "I am a full body customer";
+}
