@@ -66,6 +66,7 @@ public:
     Close(int id);
     void act(Studio &studio) override;
     std::string toString() const override;
+    void print(const int id, Trainer *pTrainer);
 private:
     const int trainerId;
 };
