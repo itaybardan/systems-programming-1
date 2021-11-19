@@ -76,7 +76,8 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
     // pushing the cheapest CARDIO workout.
     orders.push_back(workout_options[order_index].getId());
 
-
+    //finally returns the vector
+    return orders;
 }
 
 std::string FullBodyCustomer::toString() const {
