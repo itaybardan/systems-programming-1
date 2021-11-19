@@ -13,7 +13,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
     int max_price = INT_MIN;
     bool flag = true;
     int order_index;
-    int last_index = static_cast<int>(workout_options.size() - 1);
+    int last_index = static_cast<int>(workout_options.size()) - 1;
     for (int i = last_index; i >= 0; i--) {
         if (workout_options[i].getType() == CARDIO) {
             price = workout_options[i].getPrice();
@@ -70,11 +70,11 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
                 min_price = price;
                 min_id = workout_options[i].getId();
                 order_index = i;
-                }
             }
         }
-        // pushing the cheapest CARDIO workout.
-        orders.push_back(workout_options[order_index].getId());
+    }
+    // pushing the cheapest CARDIO workout.
+    orders.push_back(workout_options[order_index].getId());
 
 
 }
