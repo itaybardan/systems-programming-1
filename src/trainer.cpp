@@ -74,9 +74,9 @@ void Trainer::closeTrainer() {
 //returning the sum of prices of workouts being order of a given trainer
 int Trainer::getSalary() {
     int salary = 0;
-    for(int i = 0 ; i < static_cast<int>(this->orderList.size()) ; i++){
+    for(int i = 0 ; i < static_cast<int>(this->getOrders().size()) ; i++){
         //iterating over order list of this trainer and sum his workout prices
-        salary += orderList[i].second.getPrice();
+        salary += this->getOrders()[i].second.getPrice();
     }
     return salary;
 }
