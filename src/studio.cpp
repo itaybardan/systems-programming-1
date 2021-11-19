@@ -93,6 +93,10 @@ std::vector<Workout> &Studio::getWorkoutOptions() {
     return *empty;
 }
 
+void Studio::setClose(){
+    open = false;
+}
+
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter) {
     size_t pos = 0;
     std::string substr;
