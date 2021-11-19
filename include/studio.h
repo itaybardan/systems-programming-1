@@ -24,6 +24,8 @@ public:
 
     std::vector<Workout> &getWorkoutOptions();
 
+    void setClose() ;
+
 private:
     bool open;
     std::vector<Trainer *> trainers;
