@@ -14,10 +14,10 @@ void Close::act(Studio &studio) {
         error("Trainer does not exist or is not open");
     }
 
-//prints: "Trainer 'id' close. Salary 'amount'NIS"
-    std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
+    //prints: "Trainer 'id' close. Salary 'amount'NIS"
+    print(trainerId,temp_trainer);
 
-//closes this trainer workout session.
+    //closes this trainer workout session.
     temp_trainer->closeTrainer();
 
     //removing all of his customers.
@@ -34,6 +34,11 @@ void Close::act(Studio &studio) {
 
     //call complete of base action.
     complete();
+}
+
+//print function
+void print(const int trainerId, Trainer *temp_trainer) {
+    std::cout << "Trainer " << std::to_string(trainerId) << " closed. Salary " << temp_trainer->getSalary() << "NIS";
 }
 
 std::string Close::toString() const {
