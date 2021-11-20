@@ -15,6 +15,10 @@ public:
 
     explicit Studio(const std::string &configFilePath);
 
+    Studio(Studio &other);
+
+    Studio(Studio &&other);
+
     void start();
 
     int getNumOfTrainers() const;
@@ -26,6 +30,12 @@ public:
     int getTraineesAvailableId();
 
     void increaseAvailableId();
+
+    virtual ~Studio();
+
+    virtual Studio &operator=(const Studio &other);
+
+    virtual Studio &operator=(const Studio &&other);
 
     const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout> &getWorkoutOptions();

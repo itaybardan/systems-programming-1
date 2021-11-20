@@ -149,6 +149,21 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 
 Studio::Studio() {}
 
+Studio::~Studio() {
+    for (Trainer *t: this->trainers) {
+        delete t;
+    }
+}
+
+Studio &Studio::operator=(const Studio &other) {
+    auto *s = new Studio();
+    return *s;
+}
+
+Studio &Studio::operator=(const Studio &&other) {
+    auto *s = new Studio();
+    return *s;
+}
 
 std::vector<Trainer *> Studio::getTrainers() {
     return this->trainers;
