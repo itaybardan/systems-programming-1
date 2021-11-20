@@ -6,14 +6,14 @@
 #include <algorithm>
 
 
-std::map<std::string, int> Studio::OpenTrainerParamNameToIndex = {{"trainerId",     1},
-                                                                  {"customersList", 2}};
 
-Studio::Studio(const std::string &configFilePath) : open(false), trainers(*(new std::vector<Trainer *>())),
-                                                    workout_options() {
+Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple <std::vector<Trainer *>, std::vector<Workout>> configOutput = parseConfigFile(configFilePath);
     this->trainers = std::get<0>(configOutput);
     this->workout_options = std::get<1>(configOutput);
+    std::copy(this->workout_options.begin(), this->workout_options.end(),
+              std::back_inserter(this->workoutOptionsSortedByPrice));
+    std::sort(this->workoutOptionsSortedByPrice.begin(), this->workoutOptionsSortedByPrice.end());
 
 }
 
@@ -26,19 +26,9 @@ void Studio::start() {
         std::vector <std::string> *action = splitByDelimiter(inputLine, " ");
         std::string mainAction = action->at(0);
         if (mainAction == "open") {
-            std::vector <std::string> *customersInfo = splitByDelimiter(
-                    action->at(Studio::OpenTrainerParamNameToIndex.find("customersList")->second), " ");
-            std::vector < Customer * > customers;
-            int customerIdCounter = 0;
-            for (std::string customerInfo: *customersInfo) {
-                std::vector <std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
-                if (customerInfoVector->at(1) == "swt") {
-                    customers.push_back(new SweatyCustomer(customerInfoVector->at(0), customerIdCounter));
-                    customerIdCounter++;
-                }
-                delete customerInfoVector;
-            }
-            delete customersInfo;
+            OpenTrainer *openTrainer = OpenTrainer::parseCommand(*action);
+            openTrainer->act(*this);
+
         } else if (mainAction == "order") { ;
 
         } else if (mainAction == "close") { ;

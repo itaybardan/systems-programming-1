@@ -10,7 +10,6 @@
 
 class Studio {
 public:
-    static std::map<std::string, int> OpenTrainerParamNameToIndex;
 
     Studio();
 
@@ -29,6 +28,7 @@ private:
     bool open;
     std::vector<Trainer *> trainers;
     std::vector<Workout> workout_options;
+    std::vector<Workout> workoutOptionsSortedByPrice;
     std::vector<BaseAction *> actionsLog;
 };
 
