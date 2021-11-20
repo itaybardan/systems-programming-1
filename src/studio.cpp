@@ -10,6 +10,7 @@ Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
+    // TODO: sorting is not working
     std::sort(this->workout_options.begin(), this->workout_options.end());
 }
 

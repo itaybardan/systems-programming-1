@@ -11,6 +11,7 @@ void CloseAll::act(Studio &studio) {
             t->closeTrainer();
         }
     }
+    std::cout << "Studio is now closed!" << std::endl;
 }
 
 std::string CloseAll::toString() const {

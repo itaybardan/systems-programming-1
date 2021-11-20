@@ -38,5 +38,5 @@ Workout &Workout::operator=(const Workout &other) {
 }
 
 bool Workout::operator<(const Workout &other) const {
-    return this->getPrice() < other.getPrice();
+    return this->price < other.price;
 }

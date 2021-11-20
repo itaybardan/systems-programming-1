@@ -9,8 +9,8 @@ void MoveCustomer::act(Studio &studio) {
     Trainer *sourceTrainer = studio.getTrainer(this->srcTrainer);
     Trainer *destTrainer = studio.getTrainer(this->dstTrainer);
     Customer *customer = sourceTrainer->getCustomer(this->id);
-    if (customer == nullptr || sourceTrainer == nullptr || destTrainer == nullptr || !sourceTrainer->isOpen() || !destTrainer->isOpen() ||
-        destTrainer->getCapacity() == static_cast<int>(destTrainer->getCustomers().size())) {
+    if (customer == nullptr || sourceTrainer == nullptr || destTrainer == nullptr || !sourceTrainer->isOpen() ||
+        !destTrainer->isOpen() || destTrainer->getCapacity() == static_cast<int>(destTrainer->getCustomers().size())) {
         this->error("Cannot move customer");
         return;
     }
@@ -18,7 +18,9 @@ void MoveCustomer::act(Studio &studio) {
     if (sourceTrainer->getCustomers().size() == 0) {
         sourceTrainer->closeTrainer();
     }
+    std::vector<int> workoutIds = customer->order(studio.getWorkoutOptions());
     destTrainer->addCustomer(customer);
+    destTrainer->order(customer->getId(), workoutIds, studio.getWorkoutOptions());
 }
 
 std::string MoveCustomer::toString() const {
