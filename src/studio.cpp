@@ -10,12 +10,7 @@ Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
-    std::copy(this->workout_options.begin(), this->workout_options.end(),
-              std::back_inserter(this->workoutOptionsSortedByPrice));
-    std::sort(this->workoutOptionsSortedByPrice.begin(), this->workoutOptionsSortedByPrice.end());
     std::sort(this->workout_options.begin(), this->workout_options.end());
-
-
 }
 
 void Studio::start() {
@@ -96,10 +91,12 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
             }
             int id = 0;
             for (std::array<std::string, 3> workoutAttributes: workoutsAttributes) {
-                std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(), workoutAttributes[1].begin(),
+                std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(),
+                               workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
                 workouts->push_back(*(new Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
-                                                  Workout::WorkoutTypeResolver.find(workoutAttributes[1])->second)));
+                                                  Workout::WorkoutTypeResolver.find(
+                                                          workoutAttributes[1])->second)));
                 id++;
             }
         }

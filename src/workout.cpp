@@ -1,5 +1,5 @@
 #include "../include/workout.h"
-
+#include "iostream"
 
 std::map<std::string, WorkoutType> Workout::WorkoutTypeResolver = {{"anaerobic", WorkoutType::ANAEROBIC},
                                                                    {"mixed",     WorkoutType::MIXED},
@@ -7,7 +7,10 @@ std::map<std::string, WorkoutType> Workout::WorkoutTypeResolver = {{"anaerobic",
 
 Workout::Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type) : id(w_id), name(w_name),
                                                                                   price(w_price), type(w_type) {
-    return;
+}
+
+Workout::Workout(const Workout &other) : id(other.id), name(other.name), price(other.price), type(other.type) {
+
 }
 
 int Workout::getId() const {
@@ -27,13 +30,14 @@ WorkoutType Workout::getType() const {
 }
 
 Workout &Workout::operator=(const Workout &other) {
-    // Guard self assignment
-    if (this == &other)
+    if (this == &other) {
         return *this;
-
-    return *this;
+    }
+    auto *workout = new Workout(other);
+    return *workout;
 }
-
 bool Workout::operator<(const Workout &other) const {
-    return this->price < other.price;
+    bool result = this->getPrice() < other.getPrice();
+    std::cout << result << std::endl;
+    return result;
 }

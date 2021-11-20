@@ -1,6 +1,7 @@
 #include "../include/trainer.h"
 #include <iostream>
 #include "../include/customer.h"
+#include <algorithm>
 
 Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 
@@ -15,7 +16,12 @@ void Trainer::addCustomer(Customer *customer) {
 }
 
 void Trainer::removeCustomer(int id) {
-
+    this->customersList.erase(std::remove_if(this->customersList.begin(), this->customersList.end(),
+                                             [&id](const Customer *c) -> bool { return c->getId() == id; }),
+                              this->customersList.end());
+    this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
+                                         [&id](const OrderPair &op) -> bool { return op.first == id; }),
+                          this->orderList.end());
 }
 
 Customer *Trainer::getCustomer(int id) {
