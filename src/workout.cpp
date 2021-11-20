@@ -36,8 +36,7 @@ Workout &Workout::operator=(const Workout &other) {
     auto *workout = new Workout(other);
     return *workout;
 }
+
 bool Workout::operator<(const Workout &other) const {
-    bool result = this->getPrice() < other.getPrice();
-    std::cout << result << std::endl;
-    return result;
+    return this->getPrice() < other.getPrice();
 }
