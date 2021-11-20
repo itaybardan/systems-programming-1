@@ -11,6 +11,7 @@ void PrintWorkoutOptions::act(Studio &studio) {
         std::cout << workout.getType() << ", ";
         std::cout << workout.getPrice() << std::endl;
     }
+    this->complete();
 }
 
 std::string PrintWorkoutOptions::toString() const {

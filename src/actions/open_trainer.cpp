@@ -31,7 +31,7 @@ void OpenTrainer::act(Studio &studio) {
 }
 
 std::string OpenTrainer::toString() const {
-    return {};
+    return "open " + std::to_string(this->trainerId);
 }
 
 /**

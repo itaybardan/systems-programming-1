@@ -9,6 +9,7 @@ RestoreStudio::RestoreStudio() {
 
 void RestoreStudio::act(Studio &studio) {
     studio = *backup;
+    this->complete();
 }
 
 std::string RestoreStudio::toString() const {

@@ -12,6 +12,7 @@ void Close::act(Studio &studio) {
         return;
     }
     t->closeTrainer();
+    this->complete();
 
 }
 

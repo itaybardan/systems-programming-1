@@ -30,6 +30,7 @@ void PrintTrainerStatus::act(Studio &studio) {
 
     s.append("Current Trainer’s Salary: " + std::to_string(t->getSalary()) + "NIS\n");
     std::cout << s;
+    this->complete();
 }
 
 std::string PrintTrainerStatus::toString() const {
