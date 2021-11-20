@@ -24,7 +24,7 @@ void PrintTrainerStatus::act(Studio &studio) {
 
     s.append("Orders:\n");
     for (OrderPair orderPair: t->getOrders()) {
-        s.append(orderPair.second.getName() + std::to_string(orderPair.second.getPrice()) +
+        s.append(orderPair.second.getName() + " " + std::to_string(orderPair.second.getPrice()) + " " +
                  std::to_string(orderPair.first) + "\n");
     }
 

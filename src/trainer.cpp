@@ -1,5 +1,6 @@
 #include "../include/trainer.h"
 #include <iostream>
+#include "../include/customer.h"
 
 Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 
@@ -18,7 +19,7 @@ void Trainer::removeCustomer(int id) {
 }
 
 Customer *Trainer::getCustomer(int id) {
-    for (Customer *customer : this->getCustomers()) {
+    for (Customer *customer: this->getCustomers()) {
         if (customer->getId() == id) {
             return customer;
         }
@@ -36,7 +37,17 @@ std::vector<OrderPair> &Trainer::getOrders() {
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
                     const std::vector<Workout> &workout_options) {
-
+    // TODO: find what we suppose to do in here.. i used 2 for loops which is naive but it seems strange
+    for (int workoutId: workout_ids) {
+        Customer *customer = this->getCustomer(customer_id);
+        for (Workout workout: workout_options) {
+            if (workout.getId() == workoutId) {
+                std::cout << customer->getName() + " Is Doing " + workout.getName() << std::endl;
+                this->orderList.push_back(OrderPair(customer_id, workout));
+                break;
+            }
+        }
+    }
 }
 
 void Trainer::openTrainer() {
@@ -46,14 +57,14 @@ void Trainer::openTrainer() {
 void Trainer::closeTrainer() {
     this->open = false;
 
-    std::cout << "Trainer 2 closed. " ;
-    std::cout << "Salary "<< this->getSalary() << "NIS" << std::endl;
+    std::cout << "Trainer 2 closed. ";
+    std::cout << "Salary " << this->getSalary() << "NIS" << std::endl;
 }
 
 // TODO: we need to understand if the salary is accumulated over multiple sessions or not
 int Trainer::getSalary() {
     int salary = 0;
-    for (OrderPair orderPair : this->getOrders()) {
+    for (OrderPair orderPair: this->getOrders()) {
         salary += orderPair.second.getPrice();
     }
     return salary;

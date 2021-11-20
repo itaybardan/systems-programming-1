@@ -12,8 +12,10 @@ void Order::act(Studio &studio) {
         return;
     }
     for (Customer *customer: t->getCustomers()) {
-        customer->order(studio.getWorkoutOptions());
+        std::vector<int> workoutIds = customer->order(studio.getWorkoutOptions());
+        t->order(customer->getId(), workoutIds, studio.getWorkoutOptions());
     }
+
 }
 
 std::string Order::toString() const {
