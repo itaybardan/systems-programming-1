@@ -9,5 +9,6 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
 }
 
 std::string CheapCustomer::toString() const {
-    return {};
+    return std::to_string(this->getId()) + " " + this->getName() + "\n";
+
 }

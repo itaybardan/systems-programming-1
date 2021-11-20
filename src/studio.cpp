@@ -26,8 +26,7 @@ void Studio::start() {
         std::string mainAction = action->at(0);
         BaseAction *baseAction;
         if (mainAction == "open") {
-            baseAction = OpenTrainer::parseCommand(*action);
-
+            baseAction = OpenTrainer::parseCommand(*action, this);
         } else if (mainAction == "order") {
             baseAction = Order::parseCommand(*action);
         } else if (mainAction == "close") { ;
@@ -143,4 +142,12 @@ Studio::Studio() {}
 
 std::vector<Trainer *> Studio::getTrainers() {
     return this->trainers;
+}
+
+int Studio::getTraineesAvailableId() {
+    return this->traineesAvailableId;
+}
+
+void Studio::increaseAvailableId() {
+    this->traineesAvailableId++;
 }

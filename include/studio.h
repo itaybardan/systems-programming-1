@@ -23,6 +23,10 @@ public:
 
     Trainer *getTrainer(int tid);
 
+    int getTraineesAvailableId();
+
+    void increaseAvailableId();
+
     const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout> &getWorkoutOptions();
 
@@ -32,6 +36,7 @@ private:
     std::vector<Workout> workout_options;
     std::vector<Workout> workoutOptionsSortedByPrice;
     std::vector<BaseAction *> actionsLog;
+    int traineesAvailableId = 0;
 };
 
 

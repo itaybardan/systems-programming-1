@@ -34,31 +34,44 @@ std::string OpenTrainer::toString() const {
     return {};
 }
 
-OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command) {
+/**
+ * @param command a vector split by spaces representing the input line from the user
+ * @return OpenTrainer object
+ */
+OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio *studio) {
     int trainerIdParam = std::stoi(command.at(OpenTrainer::openTrainerParamNameToIndex.find("trainerId")->second));
-    std::vector<std::string> *customersInfo = splitByDelimiter(
-            command.at(OpenTrainer::openTrainerParamNameToIndex.find("customersList")->second), " ");
+    Trainer *t = studio->getTrainer(trainerIdParam);
+    int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
+
+    auto *customersInfo = new std::vector<std::string>(
+            command.begin() + OpenTrainer::openTrainerParamNameToIndex.find("customersList")->second,
+            command.end());
     auto *customersVector = new std::vector<Customer *>;
-    int customerIdCounter = 0;
     for (std::string customerInfo: *customersInfo) {
+        if (t == nullptr || placesLeft <= 0 || t->isOpen()) {
+            break;
+        }
         std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
         if (customerInfoVector->at(1) == "swt") {
-            auto *customer = new SweatyCustomer(customerInfoVector->at(0), customerIdCounter);
+            auto *customer = new SweatyCustomer(customerInfoVector->at(0), studio->getTraineesAvailableId());
+            studio->increaseAvailableId();
             customersVector->push_back(customer);
         } else if (customerInfoVector->at(1) == "chp") {
-            auto *customer = new CheapCustomer(customerInfoVector->at(0), customerIdCounter);
+            auto *customer = new CheapCustomer(customerInfoVector->at(0), studio->getTraineesAvailableId());
+            studio->increaseAvailableId();
             customersVector->push_back(customer);
         } else if (customerInfoVector->at(1) == "mcl") {
-            auto *customer = new HeavyMuscleCustomer(customerInfoVector->at(0), customerIdCounter);
+            auto *customer = new HeavyMuscleCustomer(customerInfoVector->at(0), studio->getTraineesAvailableId());
+            studio->increaseAvailableId();
             customersVector->push_back(customer);
         } else if (customerInfoVector->at(1) == "fbd") {
-            auto *customer = new FullBodyCustomer(customerInfoVector->at(0), customerIdCounter);
+            auto *customer = new FullBodyCustomer(customerInfoVector->at(0), studio->getTraineesAvailableId());
+            studio->increaseAvailableId();
             customersVector->push_back(customer);
         } else {
             std::cout << "Unknown customer type: " << customerInfoVector->at(1) << std::endl;
         }
-
-        customerIdCounter++;
+        placesLeft--;
         delete customerInfoVector;
     }
     delete customersInfo;

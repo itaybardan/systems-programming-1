@@ -9,20 +9,23 @@ PrintTrainerStatus::PrintTrainerStatus(int id) : trainerId(id) {
 void PrintTrainerStatus::act(Studio &studio) {
     std::string s;
     Trainer *t = studio.getTrainer(this->trainerId);
-    s.append("Trainer " + std::to_string(this->trainerId) + " status:" + std::to_string(t->isOpen()) + "\n");
+    s.append("Trainer " + std::to_string(this->trainerId) + " status: ");
     if (!t->isOpen()) {
-        std::cout << s;
+        std::cout << s + "closed\n";
         return;
+    } else {
+        s.append("open\n");
     }
     s.append("Customers:\n");
     for (Customer *customer: t->getCustomers()) {
-        s.append(customer->toString() + "\n");
+        s.append(customer->toString());
     }
 
 
-    s.append("Orders:");
+    s.append("Orders:\n");
     for (OrderPair orderPair: t->getOrders()) {
-        s.append(orderPair.second.getName() + std::to_string(orderPair.second.getPrice()) + std::to_string(orderPair.first) + "\n");
+        s.append(orderPair.second.getName() + std::to_string(orderPair.second.getPrice()) +
+                 std::to_string(orderPair.first) + "\n");
     }
 
     s.append("Current Trainer’s Salary: " + std::to_string(t->getSalary()) + "\n");

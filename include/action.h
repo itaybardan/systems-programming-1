@@ -40,7 +40,7 @@ class OpenTrainer : public BaseAction {
 public:
     static std::map<std::string, int> openTrainerParamNameToIndex;
 
-    static OpenTrainer *parseCommand(std::vector<std::string> &command);
+    static OpenTrainer *parseCommand(std::vector<std::string> &command, Studio *studio);
 
     OpenTrainer(int id, std::vector<Customer *> &customersList);
 

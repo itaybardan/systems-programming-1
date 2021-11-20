@@ -10,5 +10,6 @@ std::vector<int> SweatyCustomer::order(const std::vector<Workout> &workout_optio
 }
 
 std::string SweatyCustomer::toString() const {
-    return std::string();
+    return std::to_string(this->getId()) + " " + this->getName() + "\n";
+
 }

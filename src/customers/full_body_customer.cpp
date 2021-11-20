@@ -10,5 +10,6 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 }
 
 std::string FullBodyCustomer::toString() const {
-    return std::string();
+    return std::to_string(this->getId()) + " " + this->getName() + "\n";
+
 }

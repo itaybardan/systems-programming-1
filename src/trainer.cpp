@@ -20,7 +20,7 @@ void Trainer::removeCustomer(int id) {
 Customer *Trainer::getCustomer(int id) {
     for (Customer *customer : this->getCustomers()) {
         if (customer->getId() == id) {
-            return *customer;
+            return customer;
         }
     }
     return nullptr;
@@ -44,12 +44,19 @@ void Trainer::openTrainer() {
 }
 
 void Trainer::closeTrainer() {
+    this->open = false;
+
     std::cout << "Trainer 2 closed. " ;
     std::cout << "Salary "<< this->getSalary() << "NIS" << std::endl;
 }
 
+// TODO: we need to understand if the salary is accumulated over multiple sessions or not
 int Trainer::getSalary() {
-    return -1;
+    int salary = 0;
+    for (OrderPair orderPair : this->getOrders()) {
+        salary += orderPair.second.getPrice();
+    }
+    return salary;
 }
 
 bool Trainer::isOpen() {

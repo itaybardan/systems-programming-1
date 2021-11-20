@@ -7,7 +7,7 @@ std::vector<int> Customer::order(const std::vector<Workout> &workout_options) {
 }
 
 std::string Customer::toString() const {
-    return std::string();
+    return std::to_string(this->getId()) + " " + this->getName() + "\n";
 }
 
 std::string Customer::getName() const {
