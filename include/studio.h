@@ -19,6 +19,8 @@ public:
 
     int getNumOfTrainers() const;
 
+    std::vector<Trainer *> getTrainers();
+
     Trainer *getTrainer(int tid);
 
     const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions

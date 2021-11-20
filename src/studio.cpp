@@ -24,26 +24,33 @@ void Studio::start() {
     while (inputLine != "closeall") {
         std::vector<std::string> *action = splitByDelimiter(inputLine, " ");
         std::string mainAction = action->at(0);
+        BaseAction *baseAction;
         if (mainAction == "open") {
-            OpenTrainer *openTrainer = OpenTrainer::parseCommand(*action);
-            openTrainer->act(*this);
+            baseAction = OpenTrainer::parseCommand(*action);
 
-        } else if (mainAction == "order") { ;
-
+        } else if (mainAction == "order") {
+            baseAction = Order::parseCommand(*action);
         } else if (mainAction == "close") { ;
-
+            baseAction = Close::parseCommand(*action);
         } else if (mainAction == "move") { ;
-
+            baseAction = MoveCustomer::parseCommand(*action);
         } else if (mainAction == "status") { ;
-
+            baseAction = PrintTrainerStatus::parseCommand(*action);
         } else if (mainAction == "backup") { ;
-
+            baseAction = BackupStudio::parseCommand(*action);
         } else if (mainAction == "log") { ;
-
+            baseAction = PrintActionsLog::parseCommand(*action);
+        } else {
+            std::cout << "Unknown command name: " << mainAction << std::endl;
+            getline(std::cin, inputLine);
+            continue;
         }
-        delete action;
+        baseAction->act(*this);
+        this->actionsLog.push_back(baseAction);
         getline(std::cin, inputLine);
     }
+    CloseAll closeAll;
+    closeAll.act(*this);
 
 }
 
@@ -133,6 +140,9 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
     return result;
 }
 
-Studio::Studio() {
+Studio::Studio() {}
 
+
+std::vector<Trainer *> Studio::getTrainers() {
+    return this->trainers;
 }

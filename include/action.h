@@ -22,6 +22,7 @@ public:
 
     virtual std::string toString() const = 0;
 
+
 protected:
     void complete();
 
@@ -61,6 +62,10 @@ public:
 
     std::string toString() const override;
 
+    static std::map<std::string, int> orderParamNameToIndex;
+
+    static Order *parseCommand(std::vector<std::string> &command);
+
 private:
     const int trainerId;
 };
@@ -73,6 +78,8 @@ public:
     void act(Studio &studio) override;
 
     std::string toString() const override;
+
+    static MoveCustomer *parseCommand(std::vector<std::string> &command);
 
 private:
     const int srcTrainer;
@@ -89,6 +96,8 @@ public:
 
     std::string toString() const override;
 
+    static Close *parseCommand(std::vector<std::string> &command);
+
 private:
     const int trainerId;
 };
@@ -102,6 +111,9 @@ public:
 
     std::string toString() const override;
 
+    static CloseAll *parseCommand(std::vector<std::string> &command);
+
+
 private:
 };
 
@@ -114,6 +126,8 @@ public:
 
     std::string toString() const override;
 
+    static PrintWorkoutOptions *parseCommand(std::vector<std::string> &command);
+
 private:
 };
 
@@ -125,6 +139,9 @@ public:
     void act(Studio &studio) override;
 
     std::string toString() const override;
+
+    static PrintTrainerStatus *parseCommand(std::vector<std::string> &command);
+
 
 private:
     const int trainerId;
@@ -139,6 +156,9 @@ public:
 
     std::string toString() const override;
 
+    static PrintActionsLog *parseCommand(std::vector<std::string> &command);
+
+
 private:
 };
 
@@ -151,6 +171,9 @@ public:
 
     std::string toString() const override;
 
+    static BackupStudio *parseCommand(std::vector<std::string> &command);
+
+
 private:
 };
 
@@ -162,6 +185,9 @@ public:
     void act(Studio &studio) override;
 
     std::string toString() const override;
+
+    static RestoreStudio *parseCommand(std::vector<std::string> &command);
+
 
 };
 
