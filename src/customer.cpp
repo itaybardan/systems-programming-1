@@ -11,9 +11,9 @@ std::string Customer::toString() const {
 }
 
 std::string Customer::getName() const {
-    return std::string();
+    return this->name;
 }
 
 int Customer::getId() const {
-    return -1;
+    return this->id;
 }

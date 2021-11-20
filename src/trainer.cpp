@@ -6,11 +6,11 @@ Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 }
 
 int Trainer::getCapacity() const {
-    return -1;
+    return this->capacity;
 }
 
 void Trainer::addCustomer(Customer *customer) {
-
+    this->customersList.push_back(customer);
 }
 
 void Trainer::removeCustomer(int id) {
@@ -18,17 +18,20 @@ void Trainer::removeCustomer(int id) {
 }
 
 Customer *Trainer::getCustomer(int id) {
+    for (Customer *customer : this->getCustomers()) {
+        if (customer->getId() == id) {
+            return *customer;
+        }
+    }
     return nullptr;
 }
 
 std::vector<Customer *> &Trainer::getCustomers() {
-    auto *empty = new std::vector<Customer *>();
-    return *empty;
+    return this->customersList;
 }
 
 std::vector<OrderPair> &Trainer::getOrders() {
-    auto *empty = new std::vector<OrderPair>();
-    return *empty;
+    return this->orderList;
 }
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
@@ -37,7 +40,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
 }
 
 void Trainer::openTrainer() {
-
+    this->open = true;
 }
 
 void Trainer::closeTrainer() {
@@ -50,5 +53,5 @@ int Trainer::getSalary() {
 }
 
 bool Trainer::isOpen() {
-    return false;
+    return this->open;
 }

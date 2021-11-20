@@ -118,13 +118,11 @@ Trainer *Studio::getTrainer(int tid) {
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
-    const std::vector<BaseAction *> *empty = new std::vector<BaseAction *>();
-    return *empty;
+    return this->actionsLog;
 }
 
 std::vector<Workout> &Studio::getWorkoutOptions() {
-    std::vector<Workout> *empty = new std::vector<Workout>();
-    return *empty;
+    return this->workout_options;
 }
 
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter) {

@@ -8,7 +8,8 @@ BackupStudio::BackupStudio() {
 }
 
 void BackupStudio::act(Studio &studio) {
-
+    // we need to implement rule of 5 in studio class in order for this line to work
+    *backup = studio;
 }
 
 std::string BackupStudio::toString() const {

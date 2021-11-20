@@ -11,20 +11,19 @@ Workout::Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type) 
 }
 
 int Workout::getId() const {
-    return -1;
+    return this->id;
 }
 
 std::string Workout::getName() const {
-    return std::string();
+    return this->name;
 }
 
 int Workout::getPrice() const {
-    return -1;
+    return this->price;
 }
 
 WorkoutType Workout::getType() const {
-    WorkoutType *empty = new WorkoutType();
-    return *empty;
+    return this->type;
 }
 
 Workout &Workout::operator=(const Workout &other) {
