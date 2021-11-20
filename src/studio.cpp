@@ -80,7 +80,7 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    return this->trainers.at(tid);
+    return trainers[tid];
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
@@ -91,6 +91,10 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 std::vector<Workout> &Studio::getWorkoutOptions() {
     std::vector<Workout> *empty = new std::vector<Workout>();
     return *empty;
+}
+
+void Studio::setClose(){
+    open = false;
 }
 
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter) {
