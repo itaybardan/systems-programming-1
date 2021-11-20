@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-BaseAction::BaseAction() : errorMsg("BaseAction Error"), status(ERROR) {
+BaseAction::BaseAction() : errorMsg(), status(ERROR) {
 
 }
 
@@ -15,8 +15,8 @@ void BaseAction::complete() {
     this->status = ActionStatus::COMPLETED;
 }
 
-// change the status to ERROR when an actions result in an error.
-// and prints and errorMsg given by the user.
+// change the status to ERROR when an action result in an error.
+// and prints the errorMsg given by the user.
 void BaseAction::error(std::string errorMessage) {
     this->status = ActionStatus::ERROR;
     this->errorMsg = errorMessage;

@@ -13,6 +13,8 @@ Studio::Studio(const std::string &configFilePath) : open(false) {
     std::copy(this->workout_options.begin(), this->workout_options.end(),
               std::back_inserter(this->workoutOptionsSortedByPrice));
     std::sort(this->workoutOptionsSortedByPrice.begin(), this->workoutOptionsSortedByPrice.end());
+    std::sort(this->workout_options.begin(), this->workout_options.end());
+
 
 }
 
@@ -113,7 +115,11 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    return this->trainers.at(tid);
+    try {
+        return this->trainers.at(tid);
+    } catch (const std::out_of_range &oor) {
+        return nullptr;
+    }
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
