@@ -75,8 +75,12 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
                     std::cout << "Problem in the input configurations file. number of trainers does"
                                  " not match number of capacities" << std::endl;
                 } else {
+                    int trainerId = 0;
                     for (const std::string &capacity: (*splitResults)) {
-                        trainers->push_back(new Trainer(std::stoi(capacity)));
+                        Trainer *t = new Trainer(std::stoi(capacity));
+                        t->setId(trainerId);
+                        trainerId++;
+                        trainers->push_back(t);
                     }
                 }
                 delete splitResults;

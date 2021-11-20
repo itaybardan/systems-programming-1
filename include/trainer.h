@@ -25,7 +25,12 @@ public:
 
     void order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options);
 
+    void orderWithoutPrint(const int customer_id, const std::vector<int> workout_ids,
+                           const std::vector<Workout> &workout_options);
+
     void openTrainer();
+
+    void setId(int newId);
 
     void closeTrainer();
 
@@ -34,6 +39,7 @@ public:
     bool isOpen();
 
 private:
+    int id;
     int capacity;
     bool open; //indicates if this trainer has a workout session in progress
     std::vector<Customer *> customersList;

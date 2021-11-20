@@ -20,7 +20,7 @@ void MoveCustomer::act(Studio &studio) {
     }
     std::vector<int> workoutIds = customer->order(studio.getWorkoutOptions());
     destTrainer->addCustomer(customer);
-    destTrainer->order(customer->getId(), workoutIds, studio.getWorkoutOptions());
+    destTrainer->orderWithoutPrint(customer->getId(), workoutIds, studio.getWorkoutOptions());
     this->complete();
 }
 
