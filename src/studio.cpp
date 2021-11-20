@@ -11,7 +11,7 @@ Studio::Studio(const std::string &configFilePath) : open(false) {
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
     // TODO: sorting is not working
-    std::sort(this->workout_options.begin(), this->workout_options.end());
+    //std::sort(this->workout_options.begin(), this->workout_options.end());
 }
 
 void Studio::start() {
@@ -37,6 +37,8 @@ void Studio::start() {
             baseAction = BackupStudio::parseCommand(*action);
         } else if (mainAction == "log") { ;
             baseAction = PrintActionsLog::parseCommand(*action);
+        } else if (mainAction == "workout_options") { ;
+            baseAction = PrintWorkoutOptions::parseCommand(*action);
         } else {
             std::cout << "Unknown command name: " << mainAction << std::endl;
             getline(std::cin, inputLine);

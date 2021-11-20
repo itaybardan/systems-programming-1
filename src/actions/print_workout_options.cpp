@@ -18,5 +18,5 @@ std::string PrintWorkoutOptions::toString() const {
 }
 
 PrintWorkoutOptions *PrintWorkoutOptions::parseCommand(std::vector<std::string> &command) {
-    return nullptr;
+    return new PrintWorkoutOptions;
 }
