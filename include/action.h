@@ -39,13 +39,13 @@ class OpenTrainer : public BaseAction {
 public:
     static std::map<std::string, int> openTrainerParamNameToIndex;
 
-    static OpenTrainer *parseCommand(std::vector <std::string> &command);
+    static OpenTrainer *parseCommand(std::vector<std::string> &command);
 
     OpenTrainer(int id, std::vector<Customer *> &customersList);
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
     const int trainerId;
@@ -55,11 +55,11 @@ private:
 
 class Order : public BaseAction {
 public:
-    Order(int id);
+    explicit Order(int id);
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
     const int trainerId;
@@ -70,9 +70,9 @@ class MoveCustomer : public BaseAction {
 public:
     MoveCustomer(int src, int dst, int customerId);
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
     const int srcTrainer;
@@ -83,11 +83,11 @@ private:
 
 class Close : public BaseAction {
 public:
-    Close(int id);
+    explicit Close(int id);
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
     const int trainerId;
@@ -98,9 +98,9 @@ class CloseAll : public BaseAction {
 public:
     CloseAll();
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
 };
@@ -110,9 +110,9 @@ class PrintWorkoutOptions : public BaseAction {
 public:
     PrintWorkoutOptions();
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
 };
@@ -120,11 +120,11 @@ private:
 
 class PrintTrainerStatus : public BaseAction {
 public:
-    PrintTrainerStatus(int id);
+    explicit PrintTrainerStatus(int id);
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
     const int trainerId;
@@ -135,9 +135,9 @@ class PrintActionsLog : public BaseAction {
 public:
     PrintActionsLog();
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
 };
@@ -147,9 +147,9 @@ class BackupStudio : public BaseAction {
 public:
     BackupStudio();
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 private:
 };
@@ -159,9 +159,9 @@ class RestoreStudio : public BaseAction {
 public:
     RestoreStudio();
 
-    void act(Studio &studio);
+    void act(Studio &studio) override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
 };
 

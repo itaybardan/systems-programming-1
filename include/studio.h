@@ -13,7 +13,7 @@ public:
 
     Studio();
 
-    Studio(const std::string &configFilePath);
+    explicit Studio(const std::string &configFilePath);
 
     void start();
 
@@ -33,7 +33,7 @@ private:
 };
 
 
-std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath);
+std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(const std::string &configFilePath);
 
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter);
 

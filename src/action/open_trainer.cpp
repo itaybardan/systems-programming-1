@@ -31,9 +31,10 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command) {
             customers->push_back(customer);
             customerIdCounter++;
         }
-        //delete customerInfoVector;
+        delete customerInfoVector;
     }
     delete customersInfo;
     auto *openTrainer = new OpenTrainer(trainerId, *customers);
+    delete customers;
     return openTrainer;
 }
