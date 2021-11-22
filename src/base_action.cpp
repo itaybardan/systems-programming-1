@@ -6,6 +6,9 @@
 BaseAction::BaseAction() : errorMsg(), status(ERROR) {
 
 }
+BaseAction::~BaseAction() {
+
+}
 
 ActionStatus BaseAction::getStatus() const {
     return this->status;

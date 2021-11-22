@@ -10,9 +10,6 @@ Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
-    for (Trainer *t: std::get<0>(configOutput)) {
-        delete t;
-    }
     delete std::get<0>(configOutput);
     delete std::get<1>(configOutput);
 
@@ -162,17 +159,13 @@ Studio::~Studio() {
 }
 
 Studio &Studio::operator=(const Studio &other) {
-    if (this != other) {
-        return *this;
-    }
     this->trainers = other.trainers;
     this->workout_options = other.workout_options;
     return *this;
 }
 
-Studio &Studio::operator=(const Studio &&other) {
-    return other;
-}
+Studio &Studio::operator=(const Studio &&other) { return *this; }
+
 
 std::vector<Trainer *> Studio::getTrainers() {
     return this->trainers;

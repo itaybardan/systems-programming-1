@@ -1,10 +1,9 @@
 #include "../include/trainer.h"
 #include <iostream>
-#include "../include/customer.h"
 #include <algorithm>
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity), totalSalary(0), currentSessionSalary(0), open(false) {
-};
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), open(false), totalSalary(0), currentSessionSalary(0) {
+}
 
 int Trainer::getCapacity() const {
     return this->capacity;
@@ -25,7 +24,7 @@ void Trainer::removeCustomer(int customerId) {
                                              }),
                               this->customersList.end());
     this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
-                                         [&customerId](const OrderPair op) -> bool {
+                                         [&customerId, this](const OrderPair op) -> bool {
                                              this->currentSessionSalary -= op.second.getPrice();
                                              return op.first == customerId;
                                          }),
@@ -56,7 +55,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
         for (Workout workout: workout_options) {
             if (workout.getId() == workoutId) {
                 std::cout << customer->getName() + " Is Doing " + workout.getName() << std::endl;
-                this->salary += workout.getPrice();
+                this->currentSessionSalary += workout.getPrice();
                 this->orderList.push_back(OrderPair(customer_id, workout));
                 break;
             }
@@ -76,7 +75,7 @@ void Trainer::closeTrainer() {
     for (Customer *c: this->customersList) {
         this->removeCustomer(c->getId());
     }
-    std::cout << "Salary " << this->totalSalary() << "NIS" << std::endl;
+    std::cout << "Salary " << std::to_string(this->totalSalary) << "NIS" << std::endl;
 
 }
 
@@ -97,7 +96,7 @@ void Trainer::orderWithoutPrint(const int customer_id, const std::vector<int> wo
     for (int workoutId: workout_ids) {
         for (Workout workout: workout_options) {
             if (workout.getId() == workoutId) {
-                this->salary += workout.getPrice();
+                this->currentSessionSalary += workout.getPrice();
                 this->orderList.push_back(OrderPair(customer_id, workout));
                 break;
             }
