@@ -45,6 +45,7 @@ void Studio::start() {
             getline(std::cin, inputLine);
             continue;
         }
+        delete action;
         baseAction->act(*this);
         this->actionsLog.push_back(baseAction);
         getline(std::cin, inputLine);
@@ -102,9 +103,9 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
                 std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(),
                                workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
-                workouts->push_back(*(new Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
+                workouts->push_back(Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
                                                   Workout::WorkoutTypeResolver.find(
-                                                          workoutAttributes[1])->second)));
+                                                          workoutAttributes[1])->second));
                 id++;
             }
         }
