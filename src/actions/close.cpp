@@ -13,6 +13,7 @@ void Close::act(Studio &studio) {
     //      2. this trainer's workout session is not open.
     if (trainerId > studio.getNumOfTrainers() || !temp_trainer->isOpen()) {
         error("Trainer does not exist or is not open");
+        return;
     }
 
     //prints: "Trainer 2 closed. Salary 740NIS"
