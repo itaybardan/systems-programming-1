@@ -71,9 +71,15 @@ void Trainer::openTrainer() {
 
 void Trainer::closeTrainer() {
     this->open = false;
-
     std::cout << "Trainer " + std::to_string(this->id) + " closed. ";
     std::cout << "Salary " << this->getSalary() << "NIS" << std::endl;
+
+    // remove all of this customers
+    int customer_id;
+    for (int i = 0; i < static_cast<int>(temp_trainer->getCustomers().size()); i++) {
+        customer_id = temp_trainer->getCustomers()[i]->getId();
+        temp_trainer->removeCustomer(customer_id);
+    }
 }
 
 int Trainer::getSalary() {

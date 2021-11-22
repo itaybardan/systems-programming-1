@@ -23,11 +23,7 @@ void Close::act(Studio &studio) {
     temp_trainer->closeTrainer();
 
     //removing all of his customers.
-    int customer_id;
-    for (int i = 0; i < static_cast<int>(temp_trainer->getCustomers().size()); i++) {
-        customer_id = temp_trainer->getCustomers()[i]->getId();
-        temp_trainer->removeCustomer(customer_id);
-    }
+
 
     //at the end of this act:
     //      1. customers list of this trainer is empty.
