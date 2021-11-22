@@ -8,10 +8,12 @@
 
 Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
+
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
-    // TODO: sorting is not working
-    //std::sort(this->workout_options.begin(), this->workout_options.end());
+    delete std::get<0>(configOutput);
+    delete std::get<1>(configOutput);
+
 }
 
 void Studio::start() {
@@ -68,7 +70,6 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
         } else if (configLine == "# Traines") {
             while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::vector<int> capacitiesOfTrainers;
-                std::stringstream stringStream(configLine);
                 std::vector<std::string> *splitResults = splitByDelimiter(configLine, ",");
 
                 if (numberOfTrainers != static_cast<int>(splitResults->size())) {
@@ -98,6 +99,7 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
             }
             int id = 0;
             for (std::array<std::string, 3> workoutAttributes: workoutsAttributes) {
+                // transform workout type to lower case string
                 std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(),
                                workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
@@ -111,7 +113,6 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
     }
     configFile.close();
     return std::make_tuple(trainers, workouts);
-
 }
 
 int Studio::getNumOfTrainers() const {
