@@ -3,7 +3,7 @@
 #include "../include/customer.h"
 #include <algorithm>
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), salary(0) {
 
 }
 
@@ -19,18 +19,23 @@ void Trainer::addCustomer(Customer *customer) {
     this->customersList.push_back(customer);
 }
 
-void Trainer::removeCustomer(int id) {
+void Trainer::removeCustomer(int customerId) {
     this->customersList.erase(std::remove_if(this->customersList.begin(), this->customersList.end(),
-                                             [&id](const Customer *c) -> bool { return c->getId() == id; }),
+                                             [&customerId](const Customer *c) -> bool {
+                                                 return c->getId() == customerId;
+                                             }),
                               this->customersList.end());
     this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
-                                         [&id](const OrderPair op) -> bool { return op.first == id; }),
+                                         [&customerId](const OrderPair op) -> bool {
+                                             this->salary -= op.second.getPrice();
+                                             return op.first == customerId;
+                                         }),
                           this->orderList.end());
 }
 
-Customer *Trainer::getCustomer(int id) {
+Customer *Trainer::getCustomer(int customerId) {
     for (Customer *customer: this->getCustomers()) {
-        if (customer->getId() == id) {
+        if (customer->getId() == customerId) {
             return customer;
         }
     }
@@ -52,6 +57,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
         for (Workout workout: workout_options) {
             if (workout.getId() == workoutId) {
                 std::cout << customer->getName() + " Is Doing " + workout.getName() << std::endl;
+                this->salary += workout.getPrice();
                 this->orderList.push_back(OrderPair(customer_id, workout));
                 break;
             }
@@ -70,13 +76,8 @@ void Trainer::closeTrainer() {
     std::cout << "Salary " << this->getSalary() << "NIS" << std::endl;
 }
 
-// TODO: we need to understand if the salary is accumulated over multiple sessions or not
 int Trainer::getSalary() {
-    int salary = 0;
-    for (OrderPair orderPair: this->getOrders()) {
-        salary += orderPair.second.getPrice();
-    }
-    return salary;
+    return this->salary;
 }
 
 bool Trainer::isOpen() {
@@ -88,6 +89,7 @@ void Trainer::orderWithoutPrint(const int customer_id, const std::vector<int> wo
     for (int workoutId: workout_ids) {
         for (Workout workout: workout_options) {
             if (workout.getId() == workoutId) {
+                this->salary += workout.getPrice();
                 this->orderList.push_back(OrderPair(customer_id, workout));
                 break;
             }
