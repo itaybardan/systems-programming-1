@@ -3,9 +3,7 @@
 #include "../include/customer.h"
 #include <algorithm>
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity), salary(0) {
-
-}
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), totalSalary(0), currentSessionSalary(0) {}
 
 int Trainer::getCapacity() const {
     return this->capacity;
@@ -27,7 +25,7 @@ void Trainer::removeCustomer(int customerId) {
                               this->customersList.end());
     this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
                                          [&customerId](const OrderPair op) -> bool {
-                                             this->salary -= op.second.getPrice();
+                                             this->currentSessionSalary -= op.second.getPrice();
                                              return op.first == customerId;
                                          }),
                           this->orderList.end());
@@ -72,18 +70,21 @@ void Trainer::openTrainer() {
 void Trainer::closeTrainer() {
     this->open = false;
     std::cout << "Trainer " + std::to_string(this->id) + " closed. ";
-    std::cout << "Salary " << this->getSalary() << "NIS" << std::endl;
-
+    this->totalSalary += this->currentSessionSalary;
     // remove all of this customers
-    int customer_id;
-    for (int i = 0; i < static_cast<int>(temp_trainer->getCustomers().size()); i++) {
-        customer_id = temp_trainer->getCustomers()[i]->getId();
-        temp_trainer->removeCustomer(customer_id);
+    for (Customer *c: this->customersList) {
+        this->removeCustomer(c->getId());
     }
+    std::cout << "Salary " << this->totalSalary() << "NIS" << std::endl;
+
 }
 
 int Trainer::getSalary() {
-    return this->salary;
+    return this->totalSalary + this->currentSessionSalary;
+}
+
+int Trainer::getcurrentSessionSalary() {
+    return this->currentSessionSalary;
 }
 
 bool Trainer::isOpen() {

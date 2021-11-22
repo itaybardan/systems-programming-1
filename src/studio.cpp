@@ -157,13 +157,16 @@ Studio::~Studio() {
 }
 
 Studio &Studio::operator=(const Studio &other) {
-    auto *s = new Studio();
-    return *s;
+    if (this != other) {
+        return *this;
+    }
+    this->trainers = other.trainers;
+    this->workout_options = other.workout_options;
+    return *this;
 }
 
 Studio &Studio::operator=(const Studio &&other) {
-    auto *s = new Studio();
-    return *s;
+    return other;
 }
 
 std::vector<Trainer *> Studio::getTrainers() {
