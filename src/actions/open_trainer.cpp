@@ -41,6 +41,9 @@ std::string OpenTrainer::toString() const {
 OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio *studio) {
     int trainerIdParam = std::stoi(command.at(OpenTrainer::openTrainerParamNameToIndex.find("trainerId")->second));
     Trainer *t = studio->getTrainer(trainerIdParam);
+    if (t == nullptr) {
+        return new OpenTrainer(trainerIdParam, *(new std::vector<Customer *>));
+    }
     int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
 
     auto *customersInfo = new std::vector<std::string>(
@@ -48,7 +51,7 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
             command.end());
     auto *customersVector = new std::vector<Customer *>;
     for (std::string customerInfo: *customersInfo) {
-        if (t == nullptr || placesLeft <= 0 || t->isOpen()) {
+        if (placesLeft <= 0 || t->isOpen()) {
             break;
         }
         std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
