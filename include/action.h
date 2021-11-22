@@ -22,6 +22,7 @@ public:
 
     virtual std::string toString() const = 0;
 
+    virtual ~BaseAction();
 
 protected:
     void complete();

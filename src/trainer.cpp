@@ -3,7 +3,8 @@
 #include "../include/customer.h"
 #include <algorithm>
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity), totalSalary(0), currentSessionSalary(0) {}
+Trainer::Trainer(int t_capacity) : capacity(t_capacity), totalSalary(0), currentSessionSalary(0), open(false) {
+};
 
 int Trainer::getCapacity() const {
     return this->capacity;
