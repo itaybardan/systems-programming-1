@@ -8,14 +8,14 @@ enum WorkoutType {
     ANAEROBIC, MIXED, CARDIO
 };
 
-const std::map<std::string, WorkoutType> WorkoutTypeResolver = {{"anaerobic", WorkoutType::ANAEROBIC},
-                                                                {"mixed",     WorkoutType::MIXED},
-                                                                {"cardio",    WorkoutType::CARDIO}};
-
 
 class Workout {
 public:
+    static std::map<std::string, WorkoutType> WorkoutTypeResolver;
+
     Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type);
+
+    Workout(const Workout &other);
 
     int getId() const;
 
@@ -27,12 +27,13 @@ public:
 
     Workout &operator=(const Workout &other);
 
+    bool operator<(const Workout &other) const;
+
 private:
     const int id;
     const std::string name;
     const int price;
     const WorkoutType type;
 };
-
 
 #endif

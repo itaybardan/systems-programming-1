@@ -1,86 +1,96 @@
-#include "../include/studio.h"
+#include "../include/trainer.h"
+#include <iostream>
+#include "../include/customer.h"
+#include <algorithm>
 
-Trainer::Trainer(int t_capacity) : capacity(t_capacity), open(false) {
+Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 
 }
 
-//returns a given trainer's capacity of available spots
 int Trainer::getCapacity() const {
-    return capacity;
+    return this->capacity;
 }
 
-//adss a customer to a given trainer customer's list
+void Trainer::setId(int newId) {
+    this->id = newId;
+}
+
 void Trainer::addCustomer(Customer *customer) {
-    customersList.push_back(customer);
+    this->customersList.push_back(customer);
 }
 
-//removing a specific customer by ID from a given trainer customer's list
 void Trainer::removeCustomer(int id) {
-//finding the customer in the vector
-std::vector<Customer*> temp_customers_list = this->customersList;
-//creating an iterator
-std::vector<Customer*>::iterator where_is_customer;
-    for (int i = 0 ; i < static_cast<int>(temp_customers_list.size()) ; i++) {
-        if(temp_customers_list[i]->getId() == id){
-            //update iterator
-            where_is_customer = temp_customers_list.begin() + i;
-        }
-    }
-    //erasing the specific customer
-    temp_customers_list.erase(where_is_customer);
+    this->customersList.erase(std::remove_if(this->customersList.begin(), this->customersList.end(),
+                                             [&id](const Customer *c) -> bool { return c->getId() == id; }),
+                              this->customersList.end());
+    this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
+                                         [&id](const OrderPair op) -> bool { return op.first == id; }),
+                          this->orderList.end());
 }
 
-//returns a customer pointer
-//not sure if i need to return by pointer or not
 Customer *Trainer::getCustomer(int id) {
-    for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
-        if (id == customersList[i]->getId())
-            return customersList[i];
+    for (Customer *customer: this->getCustomers()) {
+        if (customer->getId() == id) {
+            return customer;
+        }
     }
     return nullptr;
 }
 
-//return the customer list of a given trainer
 std::vector<Customer *> &Trainer::getCustomers() {
-    return customersList;
+    return this->customersList;
 }
 
-// returns the order list of a given trainer
 std::vector<OrderPair> &Trainer::getOrders() {
-    return orderList;
+    return this->orderList;
 }
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids,
                     const std::vector<Workout> &workout_options) {
-    for (int i = 0; i < static_cast<int>(workout_ids.size()); i++) {
-        //for now its the workout by ID or by workout type (im not sure), will change if needed.
-        orderList.push_back(OrderPair(customer_id, workout_options[workout_ids[i]]));
-        //print the order list
-        //consider make a function Print in class Order
-        std::cout << (getCustomer(customer_id)->getName()) << "Is Doing " << workout_options[i].getName() << std::endl;
+    for (int workoutId: workout_ids) {
+        Customer *customer = this->getCustomer(customer_id);
+        for (Workout workout: workout_options) {
+            if (workout.getId() == workoutId) {
+                std::cout << customer->getName() + " Is Doing " + workout.getName() << std::endl;
+                this->orderList.push_back(OrderPair(customer_id, workout));
+                break;
+            }
+        }
     }
 }
 
-//opens a workout session of a given trainer
 void Trainer::openTrainer() {
-    open = true;
+    this->open = true;
 }
 
-//closes a workout session of a given trainer
 void Trainer::closeTrainer() {
-    open = false;
+    this->open = false;
+
+    std::cout << "Trainer " + std::to_string(this->id) + " closed. ";
+    std::cout << "Salary " << this->getSalary() << "NIS" << std::endl;
 }
 
-//returning the sum of prices of workouts being order of a given trainer
+// TODO: we need to understand if the salary is accumulated over multiple sessions or not
 int Trainer::getSalary() {
     int salary = 0;
-    for(int i = 0 ; i < static_cast<int>(this->getOrders().size()) ; i++){
-        //iterating over order list of this trainer and sum his workout prices
-        salary += this->getOrders()[i].second.getPrice();
+    for (OrderPair orderPair: this->getOrders()) {
+        salary += orderPair.second.getPrice();
     }
     return salary;
 }
 
 bool Trainer::isOpen() {
-    return open;
+    return this->open;
+}
+
+void Trainer::orderWithoutPrint(const int customer_id, const std::vector<int> workout_ids,
+                                const std::vector<Workout> &workout_options) {
+    for (int workoutId: workout_ids) {
+        for (Workout workout: workout_options) {
+            if (workout.getId() == workoutId) {
+                this->orderList.push_back(OrderPair(customer_id, workout));
+                break;
+            }
+        }
+    }
 }

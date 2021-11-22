@@ -1,30 +1,66 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <iterator>
 #include <sstream>
-#include <string>
 #include "../include/studio.h"
-#include <tuple>
 #include <algorithm>
 
-Studio::Studio(const std::string &configFilePath) : open(false), trainers(*(new std::vector<Trainer *>())),
-                                                    workout_options() {
-    std::tuple<std::vector<Trainer *>, std::vector<Workout>> configOutput = parseConfigFile(configFilePath);
-    this->trainers = std::get<0>(configOutput);
-    this->workout_options = std::get<1>(configOutput);
+
+Studio::Studio(const std::string &configFilePath) : open(false) {
+    std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
+
+    this->trainers = *std::get<0>(configOutput);
+    this->workout_options = *std::get<1>(configOutput);
+    delete std::get<0>(configOutput);
+    delete std::get<1>(configOutput);
+
 }
 
 void Studio::start() {
     this->open = true;
+    std::cout << "Studio is now open" << std::endl;
+    std::string inputLine;
+    getline(std::cin, inputLine);
+    while (inputLine != "closeall") {
+        std::vector<std::string> *action = splitByDelimiter(inputLine, " ");
+        std::string mainAction = action->at(0);
+        BaseAction *baseAction;
+        if (mainAction == "open") {
+            baseAction = OpenTrainer::parseCommand(*action, this);
+        } else if (mainAction == "order") {
+            baseAction = Order::parseCommand(*action);
+        } else if (mainAction == "close") { ;
+            baseAction = Close::parseCommand(*action);
+        } else if (mainAction == "move") { ;
+            baseAction = MoveCustomer::parseCommand(*action);
+        } else if (mainAction == "status") { ;
+            baseAction = PrintTrainerStatus::parseCommand(*action);
+        } else if (mainAction == "backup") { ;
+            baseAction = BackupStudio::parseCommand(*action);
+        } else if (mainAction == "log") { ;
+            baseAction = PrintActionsLog::parseCommand(*action);
+        } else if (mainAction == "workout_options") { ;
+            baseAction = PrintWorkoutOptions::parseCommand(*action);
+        } else {
+            std::cout << "Unknown command name: " << mainAction << std::endl;
+            getline(std::cin, inputLine);
+            continue;
+        }
+        baseAction->act(*this);
+        this->actionsLog.push_back(baseAction);
+        getline(std::cin, inputLine);
+    }
+    CloseAll closeAll;
+    closeAll.act(*this);
+
 }
 
-std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const std::string &configFilePath) {
+std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(const std::string &configFilePath) {
     std::string configLine;
     std::ifstream configFile(configFilePath);
     int numberOfTrainers = 0;
-    auto trainers = new std::vector<Trainer *>();
-    auto workouts = new std::vector<Workout>();
+    auto trainers = new std::vector<Trainer *>;
+    auto workouts = new std::vector<Workout>;
 
     while (std::getline(configFile, configLine)) {
         if (configLine == "# Number of trainers") {
@@ -34,45 +70,49 @@ std::tuple<std::vector<Trainer *>, std::vector<Workout>> parseConfigFile(const s
         } else if (configLine == "# Traines") {
             while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::vector<int> capacitiesOfTrainers;
-                std::stringstream stringStream(configLine);
-                std::string delimiter = ",";
-                std::vector<std::string> *splitResults = splitByDelimiter(configLine, delimiter);
+                std::vector<std::string> *splitResults = splitByDelimiter(configLine, ",");
 
                 if (numberOfTrainers != static_cast<int>(splitResults->size())) {
                     std::cout << "Problem in the input configurations file. number of trainers does"
                                  " not match number of capacities" << std::endl;
                 } else {
-                    for (const std::string& capacity: (*splitResults)) {
-                        trainers->push_back(new Trainer(std::stoi(capacity)));
+                    int trainerId = 0;
+                    for (const std::string &capacity: (*splitResults)) {
+                        Trainer *t = new Trainer(std::stoi(capacity));
+                        t->setId(trainerId);
+                        trainerId++;
+                        trainers->push_back(t);
                     }
                 }
+                delete splitResults;
             }
         } else if (configLine == "# Work Options") {
             std::vector<std::array<std::string, 3>> workoutsAttributes;
             while (std::getline(configFile, configLine) && !configLine.empty()) {
                 std::array<std::string, 3> workoutAttributes;
-                std::stringstream stringStream(configLine);
-                std::string delimiter = ", ";
-                std::vector<std::string> *splitResults = splitByDelimiter(configLine, delimiter);
+                std::vector<std::string> *splitResults = splitByDelimiter(configLine, ", ");
                 for (int i = 0; i < static_cast<int>(workoutAttributes.size()); i++) {
                     workoutAttributes[i] = (*splitResults).at(i);
                 }
                 workoutsAttributes.push_back(workoutAttributes);
+                delete splitResults;
             }
             int id = 0;
             for (std::array<std::string, 3> workoutAttributes: workoutsAttributes) {
-                std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(), workoutAttributes[1].begin(),
+                // transform workout type to lower case string
+                std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(),
+                               workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
                 workouts->push_back(*(new Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
-                                                  WorkoutTypeResolver.find(workoutAttributes[1])->second)));
+                                                  Workout::WorkoutTypeResolver.find(
+                                                          workoutAttributes[1])->second)));
                 id++;
             }
         }
 
     }
     configFile.close();
-    return std::make_tuple(*trainers, *workouts);
-
+    return std::make_tuple(trainers, workouts);
 }
 
 int Studio::getNumOfTrainers() const {
@@ -80,24 +120,22 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    return trainers[tid];
+    try {
+        return this->trainers.at(tid);
+    } catch (const std::out_of_range &oor) {
+        return nullptr;
+    }
 }
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
-    const std::vector<BaseAction *> *empty = new std::vector<BaseAction *>();
-    return *empty;
+    return this->actionsLog;
 }
 
 std::vector<Workout> &Studio::getWorkoutOptions() {
-    std::vector<Workout> *empty = new std::vector<Workout>();
-    return *empty;
+    return this->workout_options;
 }
 
-void Studio::setClose(){
-    open = false;
-}
-
-std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimiter) {
+std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter) {
     size_t pos = 0;
     std::string substr;
     auto *result = new std::vector<std::string>();
@@ -108,4 +146,34 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string &delimite
     }
     result->push_back(s);
     return result;
+}
+
+Studio::Studio() {}
+
+Studio::~Studio() {
+    for (Trainer *t: this->trainers) {
+        delete t;
+    }
+}
+
+Studio &Studio::operator=(const Studio &other) {
+    auto *s = new Studio();
+    return *s;
+}
+
+Studio &Studio::operator=(const Studio &&other) {
+    auto *s = new Studio();
+    return *s;
+}
+
+std::vector<Trainer *> Studio::getTrainers() {
+    return this->trainers;
+}
+
+int Studio::getTraineesAvailableId() {
+    return this->traineesAvailableId;
+}
+
+void Studio::increaseAvailableId() {
+    this->traineesAvailableId++;
 }
