@@ -40,3 +40,7 @@ std::string PrintTrainerStatus::toString() const {
 PrintTrainerStatus *PrintTrainerStatus::parseCommand(std::vector<std::string> &command) {
     return new PrintTrainerStatus(std::stoi(command.at(1)));
 }
+
+BaseAction *PrintTrainerStatus::clone() const {
+    return new PrintTrainerStatus(this->trainerId);
+}

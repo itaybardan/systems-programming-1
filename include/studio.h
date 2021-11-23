@@ -41,7 +41,9 @@ public:
 
     std::vector<Workout> &getWorkoutOptions();
 
-    void setClose() ;
+    void setClose();
+
+    void clear();
 
 private:
     bool open;

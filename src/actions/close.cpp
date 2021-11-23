@@ -45,3 +45,10 @@ std::string Close::toString() const {
 Close *Close::parseCommand(std::vector<std::string> &command) {
     return new Close(std::stoi(command.at(1)));
 }
+
+BaseAction *Close::clone() const {
+    auto c =  new Close(this->trainerId);
+    c->setErrMsg(this->getErrorMsg());
+    c->setStatus(this->getStatus());
+    return c;
+}

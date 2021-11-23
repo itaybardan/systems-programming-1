@@ -21,3 +21,10 @@ std::string PrintWorkoutOptions::toString() const {
 PrintWorkoutOptions *PrintWorkoutOptions::parseCommand(std::vector<std::string> &command) {
     return new PrintWorkoutOptions;
 }
+
+BaseAction *PrintWorkoutOptions::clone() const {
+    auto p = new PrintWorkoutOptions;
+    p->setErrMsg(this->getErrorMsg());
+    p->setStatus(this->getStatus());
+    return p;
+}

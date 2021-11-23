@@ -29,3 +29,10 @@ std::string Order::toString() const {
 Order *Order::parseCommand(std::vector<std::string> &command) {
     return new Order(std::stoi(command.at(1)));
 }
+
+BaseAction *Order::clone() const {
+    auto m = new Order(this->trainerId);
+    m->setErrMsg(this->getErrorMsg());
+    m->setStatus(this->getStatus());
+    return m;
+}

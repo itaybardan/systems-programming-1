@@ -24,6 +24,7 @@ public:
 
     virtual std::string toString() const = 0;
 
+    virtual BaseAction *clone() const = 0;
 
 protected:
     void complete();
@@ -31,6 +32,10 @@ protected:
     void error(std::string errorMsg);
 
     std::string getErrorMsg() const;
+
+    void setStatus(ActionStatus as);
+
+    void setErrMsg(std::string errMsg);
 
 private:
     std::string errorMsg;
@@ -45,6 +50,10 @@ public:
     static OpenTrainer *parseCommand(std::vector<std::string> &command, Studio *studio);
 
     OpenTrainer(int id, std::vector<Customer *> &customersList, std::string arguments);
+
+    virtual ~OpenTrainer();
+
+    BaseAction *clone() const override;
 
     void act(Studio &studio) override;
 
@@ -69,6 +78,8 @@ public:
 
     static Order *parseCommand(std::vector<std::string> &command);
 
+    BaseAction *clone() const override;
+
 private:
     const int trainerId;
 };
@@ -83,6 +94,8 @@ public:
     std::string toString() const override;
 
     static MoveCustomer *parseCommand(std::vector<std::string> &command);
+
+    BaseAction *clone() const override;
 
 private:
     const int srcTrainer;
@@ -101,6 +114,8 @@ public:
 
     static Close *parseCommand(std::vector<std::string> &command);
 
+    BaseAction *clone() const override;
+
 private:
     const int trainerId;
 };
@@ -115,6 +130,8 @@ public:
     std::string toString() const override;
 
     static CloseAll *parseCommand(std::vector<std::string> &command);
+
+    BaseAction *clone() const override;
 
 
 private:
@@ -131,6 +148,8 @@ public:
 
     static PrintWorkoutOptions *parseCommand(std::vector<std::string> &command);
 
+    BaseAction *clone() const override;
+
 private:
 };
 
@@ -144,6 +163,8 @@ public:
     std::string toString() const override;
 
     static PrintTrainerStatus *parseCommand(std::vector<std::string> &command);
+
+    BaseAction *clone() const override;
 
 
 private:
@@ -161,6 +182,7 @@ public:
 
     static PrintActionsLog *parseCommand(std::vector<std::string> &command);
 
+    BaseAction *clone() const override;
 
 private:
 };
@@ -176,6 +198,7 @@ public:
 
     static BackupStudio *parseCommand(std::vector<std::string> &command);
 
+    BaseAction *clone() const override;
 
 private:
 };
@@ -191,7 +214,7 @@ public:
 
     static RestoreStudio *parseCommand(std::vector<std::string> &command);
 
-
+    BaseAction *clone() const override;
 };
 
 

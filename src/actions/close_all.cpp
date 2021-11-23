@@ -22,3 +22,10 @@ std::string CloseAll::toString() const {
 CloseAll *CloseAll::parseCommand(std::vector<std::string> &command) {
     return new CloseAll;
 }
+
+BaseAction *CloseAll::clone() const {
+    auto ca =  new CloseAll;
+    ca->setStatus(this->getStatus());
+    ca->setErrMsg(this->getErrorMsg());
+    return ca;
+}

@@ -25,7 +25,9 @@ void Trainer::removeCustomer(int customerId) {
                               this->customersList.end());
     this->orderList.erase(std::remove_if(this->orderList.begin(), this->orderList.end(),
                                          [&customerId, this](const OrderPair op) -> bool {
-                                             this->currentSessionSalary -= op.second.getPrice();
+                                             if (op.first == customerId) {
+                                                 this->currentSessionSalary -= op.second.getPrice();
+                                             }
                                              return op.first == customerId;
                                          }),
                           this->orderList.end());
@@ -101,5 +103,25 @@ void Trainer::orderWithoutPrint(const int customer_id, const std::vector<int> wo
                 break;
             }
         }
+    }
+}
+
+
+Trainer *Trainer::clone() const {
+    Trainer *t = new Trainer(this->capacity);
+    t->currentSessionSalary = this->currentSessionSalary;
+    t->totalSalary = this->totalSalary;
+    t->orderList = this->orderList;
+    for (Customer *c: customersList) {
+        t->customersList.push_back(c->clone());
+    }
+    t->id = this->id;
+    t->open = this->open;
+    return t;
+}
+
+Trainer::~Trainer() {
+    for (Customer *c: customersList) {
+        delete c;
     }
 }

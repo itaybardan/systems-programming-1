@@ -21,3 +21,7 @@ std::string CheapCustomer::toString() const {
     return std::to_string(this->getId()) + " " + this->getName() + "\n";
 
 }
+
+Customer *CheapCustomer::clone() const {
+    return new CheapCustomer(this->getName(), this->getId());
+}

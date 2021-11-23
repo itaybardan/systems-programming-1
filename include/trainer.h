@@ -40,6 +40,10 @@ public:
 
     bool isOpen();
 
+    Trainer *clone() const;
+
+    virtual ~Trainer();
+
 private:
     int id;
     int capacity;

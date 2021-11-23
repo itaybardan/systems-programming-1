@@ -14,6 +14,12 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList,
 
 }
 
+OpenTrainer::~OpenTrainer() {
+    for (Customer *c: this->customers) {
+        delete c;
+    }
+}
+
 void OpenTrainer::act(Studio &studio) {
     Trainer *t = studio.getTrainer(this->trainerId);
 
@@ -95,4 +101,16 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
     delete customersInfo;
     delete customersVector;
     return openTrainer;
+}
+
+BaseAction *OpenTrainer::clone() const {
+    std::vector<Customer *> customersList;
+    for (Customer *c: this->customers) {
+        customersList.push_back(c->clone());
+    }
+
+    auto op = new OpenTrainer(this->trainerId, customersList, this->arguments);
+    op->setStatus(this->getStatus());
+    op->setErrMsg(this->getErrorMsg());
+    return op;
 }

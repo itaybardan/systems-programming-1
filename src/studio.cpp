@@ -36,6 +36,8 @@ void Studio::start() {
             baseAction = PrintTrainerStatus::parseCommand(*action);
         } else if (mainAction == "backup") { ;
             baseAction = BackupStudio::parseCommand(*action);
+        } else if (mainAction == "restore") { ;
+            baseAction = RestoreStudio::parseCommand(*action);
         } else if (mainAction == "log") { ;
             baseAction = PrintActionsLog::parseCommand(*action);
         } else if (mainAction == "workout_options") { ;
@@ -104,8 +106,8 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
                                workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
                 workouts->push_back(Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
-                                                  Workout::WorkoutTypeResolver.find(
-                                                          workoutAttributes[1])->second));
+                                            Workout::WorkoutTypeResolver.find(
+                                                    workoutAttributes[1])->second));
                 id++;
             }
         }
@@ -150,7 +152,26 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 
 Studio::Studio() {}
 
+Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_options),
+                                 traineesAvailableId(other.traineesAvailableId) {
+
+    for (Trainer *t : other.trainers){
+        this->trainers.push_back(t->clone());
+    }
+    for (BaseAction *ba : other.actionsLog){
+        this->actionsLog.push_back(ba->clone());
+    }
+}
+
+Studio::Studio(Studio &&other) : open(other.open), trainers(other.trainers), workout_options(other.workout_options),
+                                 actionsLog(other.actionsLog), traineesAvailableId(other.traineesAvailableId) {
+}
+
 Studio::~Studio() {
+    this->clear();
+}
+
+void Studio::clear() {
     for (Trainer *t: this->trainers) {
         delete t;
     }
@@ -160,13 +181,30 @@ Studio::~Studio() {
 }
 
 Studio &Studio::operator=(const Studio &other) {
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
     this->trainers = other.trainers;
     this->workout_options = other.workout_options;
+    this->actionsLog = other.actionsLog;
+    this->open = other.open;
+    this->traineesAvailableId = other.traineesAvailableId;
     return *this;
 }
 
-Studio &Studio::operator=(const Studio &&other) { return *this; }
-
+Studio &Studio::operator=(const Studio &&other) {
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
+    this->trainers = other.trainers;
+    this->workout_options = other.workout_options;
+    this->actionsLog = other.actionsLog;
+    this->open = other.open;
+    this->traineesAvailableId = other.traineesAvailableId;
+    return *this;
+}
 
 std::vector<Trainer *> Studio::getTrainers() {
     return this->trainers;

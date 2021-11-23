@@ -13,6 +13,7 @@ void RestoreStudio::act(Studio &studio) {
         return;
     }
     studio = *backup;
+    backup = nullptr;
     this->complete();
 }
 
@@ -22,4 +23,11 @@ std::string RestoreStudio::toString() const {
 
 RestoreStudio *RestoreStudio::parseCommand(std::vector<std::string> &command) {
     return new RestoreStudio;
+}
+
+BaseAction *RestoreStudio::clone() const {
+    auto m = new RestoreStudio;
+    m->setErrMsg(this->getErrorMsg());
+    m->setStatus(this->getStatus());
+    return m;
 }

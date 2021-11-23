@@ -37,3 +37,11 @@ std::string MoveCustomer::toString() const {
 MoveCustomer *MoveCustomer::parseCommand(std::vector<std::string> &command) {
     return new MoveCustomer(std::stoi(command.at(1)), std::stoi(command.at(2)), std::stoi(command.at(3)));
 }
+
+
+BaseAction *MoveCustomer::clone() const {
+    auto m = new MoveCustomer(this->srcTrainer, this->dstTrainer, this->id);
+    m->setErrMsg(this->getErrorMsg());
+    m->setStatus(this->getStatus());
+    return m;
+}
