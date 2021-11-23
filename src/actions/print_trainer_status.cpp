@@ -28,7 +28,7 @@ void PrintTrainerStatus::act(Studio &studio) {
                  std::to_string(orderPair.first) + "\n");
     }
 
-    s.append("Current Trainer’s Salary: " + std::to_string(t->getSalary()) + "NIS\n");
+    s.append("Current Trainer’s Salary: " + std::to_string(t->getcurrentSessionSalary()) + "NIS\n");
     std::cout << s;
     this->complete();
 }
