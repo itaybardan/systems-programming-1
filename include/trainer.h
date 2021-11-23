@@ -38,6 +38,12 @@ public:
 
     bool isOpen();
 
+    //Destructor
+    virtual ~Trainer();
+
+    //Copy Constructor
+    Trainer(const Trainer& other);
+
 private:
     int id;
     int capacity;

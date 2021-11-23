@@ -17,6 +17,8 @@ public:
 
     int getId() const;
 
+    Customer(const Customer &other) = default;
+
 private:
     const std::string name;
     const int id;
@@ -31,6 +33,7 @@ public:
 
     std::string toString() const override;
 
+    SweatyCustomer(const SweatyCustomer& other) = default;
 private:
 };
 
@@ -43,6 +46,7 @@ public:
 
     std::string toString() const override;
 
+    CheapCustomer(const CheapCustomer& other) = default;
 private:
 };
 
@@ -55,6 +59,7 @@ public:
 
     std::string toString() const override;
 
+    HeavyMuscleCustomer(const HeavyMuscleCustomer& other) = default;
 private:
 };
 
@@ -67,6 +72,7 @@ public:
 
     std::string toString() const override;
 
+    FullBodyCustomer(const FullBodyCustomer& other) = default;
 private:
 };
 

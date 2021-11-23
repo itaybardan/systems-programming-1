@@ -1,6 +1,5 @@
-#include "../include/trainer.h"
+#include "../include/studio.h"
 #include <iostream>
-#include "../include/customer.h"
 #include <algorithm>
 
 Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
@@ -94,3 +93,19 @@ void Trainer::orderWithoutPrint(const int customer_id, const std::vector<int> wo
         }
     }
 }
+
+//Destructor
+Trainer::~Trainer() {
+    for (Customer *c: this->customersList)
+        delete c;
+}
+
+//Copy Constructor
+Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), open(other.open) {
+
+}
+
+
+
+
+
