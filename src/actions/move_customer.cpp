@@ -25,7 +25,13 @@ void MoveCustomer::act(Studio &studio) {
 }
 
 std::string MoveCustomer::toString() const {
-    return std::string();
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "move " + std::to_string(this->srcTrainer) + " " + std::to_string(this->dstTrainer) + " " +
+               std::to_string(this->id) + " Completed";
+    } else {
+        return "move " + std::to_string(this->srcTrainer) + " " + std::to_string(this->dstTrainer) + " " +
+               std::to_string(this->id) + " Error: " + this->getErrorMsg();
+    }
 }
 
 MoveCustomer *MoveCustomer::parseCommand(std::vector<std::string> &command) {

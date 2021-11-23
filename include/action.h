@@ -44,7 +44,7 @@ public:
 
     static OpenTrainer *parseCommand(std::vector<std::string> &command, Studio *studio);
 
-    OpenTrainer(int id, std::vector<Customer *> &customersList);
+    OpenTrainer(int id, std::vector<Customer *> &customersList, std::string arguments);
 
     void act(Studio &studio) override;
 
@@ -53,6 +53,7 @@ public:
 private:
     const int trainerId;
     std::vector<Customer *> customers;
+    std::string arguments;
 };
 
 

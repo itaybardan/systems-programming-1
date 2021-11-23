@@ -7,7 +7,7 @@ Order::Order(int id) : trainerId(id) {}
 
 void Order::act(Studio &studio) {
     Trainer *t = studio.getTrainer(this->trainerId);
-    if (!t->isOpen() || t == nullptr) {
+    if (t == nullptr || !t->isOpen()) {
         this->error("Trainer does not exist or is not open");
         return;
     }
@@ -19,7 +19,11 @@ void Order::act(Studio &studio) {
 }
 
 std::string Order::toString() const {
-    return std::string();
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "order " + std::to_string(this->trainerId) + " Completed";
+    } else {
+        return "order " + std::to_string(this->trainerId) + " Error: " + this->getErrorMsg();
+    }
 }
 
 Order *Order::parseCommand(std::vector<std::string> &command) {

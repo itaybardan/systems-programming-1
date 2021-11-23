@@ -13,7 +13,7 @@ void PrintActionsLog::act(Studio &studio) {
 }
 
 std::string PrintActionsLog::toString() const {
-    return std::string();
+    return "log";
 }
 
 PrintActionsLog *PrintActionsLog::parseCommand(std::vector<std::string> &command) {

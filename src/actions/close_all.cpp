@@ -16,7 +16,7 @@ void CloseAll::act(Studio &studio) {
 }
 
 std::string CloseAll::toString() const {
-    return std::string();
+    return "closeall";
 }
 
 CloseAll *CloseAll::parseCommand(std::vector<std::string> &command) {

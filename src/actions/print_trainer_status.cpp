@@ -34,7 +34,7 @@ void PrintTrainerStatus::act(Studio &studio) {
 }
 
 std::string PrintTrainerStatus::toString() const {
-    return std::string();
+    return "status " + std::to_string(this->trainerId);
 }
 
 PrintTrainerStatus *PrintTrainerStatus::parseCommand(std::vector<std::string> &command) {

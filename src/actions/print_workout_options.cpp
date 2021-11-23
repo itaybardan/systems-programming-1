@@ -15,7 +15,7 @@ void PrintWorkoutOptions::act(Studio &studio) {
 }
 
 std::string PrintWorkoutOptions::toString() const {
-    return std::string();
+    return "workout_options";
 }
 
 PrintWorkoutOptions *PrintWorkoutOptions::parseCommand(std::vector<std::string> &command) {

@@ -14,7 +14,7 @@ void BackupStudio::act(Studio &studio) {
 }
 
 std::string BackupStudio::toString() const {
-    return std::string();
+    return "backup";
 }
 
 BackupStudio *BackupStudio::parseCommand(std::vector<std::string> &command) {

@@ -1,5 +1,4 @@
 #include "../include/workout.h"
-#include "iostream"
 
 std::map<std::string, WorkoutType> Workout::WorkoutTypeResolver = {{"anaerobic", WorkoutType::ANAEROBIC},
                                                                    {"mixed",     WorkoutType::MIXED},

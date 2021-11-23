@@ -11,7 +11,7 @@ void Close::act(Studio &studio) {
     //results in error if:
     //      1. the trainer does not exist.
     //      2. this trainer's workout session is not open.
-    if (trainerId > studio.getNumOfTrainers() || !temp_trainer->isOpen()) {
+    if (trainerId > studio.getNumOfTrainers() - 1 || !temp_trainer->isOpen()) {
         error("Trainer does not exist or is not open");
         return;
     }
@@ -35,7 +35,11 @@ void Close::act(Studio &studio) {
 }
 
 std::string Close::toString() const {
-    return std::string();
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "close " + std::to_string(this->trainerId) + " Completed";
+    } else {
+        return "close " + std::to_string(this->trainerId) + " Error: " + this->getErrorMsg();
+    }
 }
 
 Close *Close::parseCommand(std::vector<std::string> &command) {

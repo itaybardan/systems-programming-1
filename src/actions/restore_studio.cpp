@@ -8,12 +8,16 @@ RestoreStudio::RestoreStudio() {
 }
 
 void RestoreStudio::act(Studio &studio) {
+    if (backup == nullptr) {
+        this->error("No backup available");
+        return;
+    }
     studio = *backup;
     this->complete();
 }
 
 std::string RestoreStudio::toString() const {
-    return std::string();
+    return "restore";
 }
 
 RestoreStudio *RestoreStudio::parseCommand(std::vector<std::string> &command) {
