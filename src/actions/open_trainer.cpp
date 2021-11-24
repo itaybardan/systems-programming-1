@@ -14,11 +14,6 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList,
 
 }
 
-OpenTrainer::~OpenTrainer() {
-    for (Customer *c: this->customers) {
-        delete c;
-    }
-}
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *t = studio.getTrainer(this->trainerId);
@@ -31,9 +26,10 @@ void OpenTrainer::act(Studio &studio) {
     int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
     for (Customer *customer: this->customers) {
         if (placesLeft <= 0) {
-            break;
+            delete customer;
+        } else {
+            t->addCustomer(customer);
         }
-        t->addCustomer(customer);
         placesLeft--;
     }
 
@@ -105,9 +101,9 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
 
 BaseAction *OpenTrainer::clone() const {
     std::vector<Customer *> customersList;
-    for (Customer *c: this->customers) {
-        customersList.push_back(c->clone());
-    }
+//    for (Customer *c: this->customers) {
+//        customersList.push_back(c->clone());
+//    }
 
     auto op = new OpenTrainer(this->trainerId, customersList, this->arguments);
     op->setStatus(this->getStatus());

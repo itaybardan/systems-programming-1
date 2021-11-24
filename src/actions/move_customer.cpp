@@ -8,8 +8,12 @@ MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), 
 void MoveCustomer::act(Studio &studio) {
     Trainer *sourceTrainer = studio.getTrainer(this->srcTrainer);
     Trainer *destTrainer = studio.getTrainer(this->dstTrainer);
+    if (sourceTrainer == nullptr || destTrainer == nullptr) {
+        this->error("Cannot move customer");
+        return;
+    }
     Customer *customer = sourceTrainer->getCustomer(this->id);
-    if (customer == nullptr || sourceTrainer == nullptr || destTrainer == nullptr || !sourceTrainer->isOpen() ||
+    if (customer == nullptr || !sourceTrainer->isOpen() ||
         !destTrainer->isOpen() || destTrainer->getCapacity() == static_cast<int>(destTrainer->getCustomers().size())) {
         this->error("Cannot move customer");
         return;

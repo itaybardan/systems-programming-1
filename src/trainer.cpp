@@ -76,6 +76,7 @@ void Trainer::closeTrainer() {
     // remove all of this customers
     for (Customer *c: this->customersList) {
         this->removeCustomer(c->getId());
+        delete c;
     }
     std::cout << "Salary " << std::to_string(this->totalSalary) << "NIS" << std::endl;
 
@@ -121,7 +122,7 @@ Trainer *Trainer::clone() const {
 }
 
 Trainer::~Trainer() {
-    for (Customer *c: customersList) {
+    for (Customer *c: this->customersList) {
         delete c;
     }
 }

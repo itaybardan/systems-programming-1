@@ -45,6 +45,8 @@ public:
 
     void clear();
 
+    void clearPointers();
+
 private:
     bool open;
     std::vector<Trainer *> trainers;

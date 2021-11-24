@@ -21,8 +21,8 @@ BackupStudio *BackupStudio::parseCommand(std::vector<std::string> &command) {
     return new BackupStudio;
 }
 
-BaseAction* BackupStudio::clone() const {
-    auto b =  new BackupStudio;
+BaseAction *BackupStudio::clone() const {
+    auto b = new BackupStudio;
     b->setErrMsg(this->getErrorMsg());
     b->setStatus(this->getStatus());
     return b;

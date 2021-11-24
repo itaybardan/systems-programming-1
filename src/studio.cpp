@@ -45,6 +45,7 @@ void Studio::start() {
         } else {
             std::cout << "Unknown command name: " << mainAction << std::endl;
             getline(std::cin, inputLine);
+            delete action;
             continue;
         }
         delete action;
@@ -140,7 +141,7 @@ std::vector<Workout> &Studio::getWorkoutOptions() {
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter) {
     size_t pos = 0;
     std::string substr;
-    auto *result = new std::vector<std::string>();
+    auto *result = new std::vector<std::string>;
     while ((pos = s.find(delimiter)) != std::string::npos) {
         substr = s.substr(0, pos);
         result->push_back(substr);
@@ -153,12 +154,12 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 Studio::Studio() {}
 
 Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_options),
-                                 traineesAvailableId(other.traineesAvailableId) {
+                                traineesAvailableId(other.traineesAvailableId) {
 
-    for (Trainer *t : other.trainers){
+    for (Trainer *t: other.trainers) {
         this->trainers.push_back(t->clone());
     }
-    for (BaseAction *ba : other.actionsLog){
+    for (BaseAction *ba: other.actionsLog) {
         this->actionsLog.push_back(ba->clone());
     }
 }
@@ -216,4 +217,10 @@ int Studio::getTraineesAvailableId() {
 
 void Studio::increaseAvailableId() {
     this->traineesAvailableId++;
+}
+
+void Studio::clearPointers() {
+    this->trainers = std::vector<Trainer *>();
+    this->actionsLog = std::vector<BaseAction *>();
+
 }

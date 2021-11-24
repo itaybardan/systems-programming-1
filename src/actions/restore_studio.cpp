@@ -13,7 +13,9 @@ void RestoreStudio::act(Studio &studio) {
         return;
     }
     studio = *backup;
-    backup = nullptr;
+    backup->clearPointers();
+    delete backup;
+    backup = nullptr; // problem valgrind
     this->complete();
 }
 

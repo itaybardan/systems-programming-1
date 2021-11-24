@@ -16,7 +16,7 @@ class BaseAction {
 public:
     BaseAction();
 
-    virtual ~BaseAction() = 0;
+    virtual ~BaseAction();
 
     ActionStatus getStatus() const;
 
@@ -50,8 +50,6 @@ public:
     static OpenTrainer *parseCommand(std::vector<std::string> &command, Studio *studio);
 
     OpenTrainer(int id, std::vector<Customer *> &customersList, std::string arguments);
-
-    virtual ~OpenTrainer();
 
     BaseAction *clone() const override;
 
