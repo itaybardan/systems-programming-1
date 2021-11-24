@@ -47,7 +47,7 @@ Close *Close::parseCommand(std::vector<std::string> &command) {
 }
 
 BaseAction *Close::clone() const {
-    auto c =  new Close(this->trainerId);
+    auto c = new Close(this->trainerId);
     c->setErrMsg(this->getErrorMsg());
     c->setStatus(this->getStatus());
     return c;

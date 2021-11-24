@@ -6,7 +6,7 @@ PrintActionsLog::PrintActionsLog() {
 }
 
 void PrintActionsLog::act(Studio &studio) {
-    for (BaseAction *baseAction : studio.getActionsLog()){
+    for (BaseAction *baseAction: studio.getActionsLog()) {
         std::cout << baseAction->toString() << std::endl;
     }
     this->complete();
@@ -24,4 +24,5 @@ BaseAction *PrintActionsLog::clone() const {
     auto m = new PrintActionsLog;
     m->setErrMsg(this->getErrorMsg());
     m->setStatus(this->getStatus());
-    return m;}
+    return m;
+}

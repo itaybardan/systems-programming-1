@@ -24,7 +24,7 @@ CloseAll *CloseAll::parseCommand(std::vector<std::string> &command) {
 }
 
 BaseAction *CloseAll::clone() const {
-    auto ca =  new CloseAll;
+    auto ca = new CloseAll;
     ca->setStatus(this->getStatus());
     ca->setErrMsg(this->getErrorMsg());
     return ca;

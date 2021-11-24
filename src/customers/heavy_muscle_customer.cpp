@@ -31,7 +31,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     });
 
     std::vector<int> orders;
-    for (std::pair<int, int> orderPair : orderPairs) {
+    for (std::pair<int, int> orderPair: orderPairs) {
         orders.push_back(orderPair.first);
     }
     return orders;
