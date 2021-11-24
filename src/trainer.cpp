@@ -75,9 +75,15 @@ void Trainer::closeTrainer() {
     this->totalSalary += this->currentSessionSalary;
     // remove all of this customers
     for (Customer *c: this->customersList) {
-        this->removeCustomer(c->getId());
+        for (OrderPair op: this->orderList) {
+            if (c->getId() == op.first) {
+                this->currentSessionSalary -= op.second.getPrice();
+            }
+        }
         delete c;
     }
+    this->orderList.clear();
+    this->customersList.clear();
     std::cout << "Salary " << std::to_string(this->totalSalary) << "NIS" << std::endl;
 
 }
