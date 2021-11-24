@@ -112,9 +112,25 @@ Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity),
 Trainer::Trainer(Trainer &&other) {
     this->id = other.id;
     this->open = other.open;
+    this->capacity = other.capacity;
     this->orderList = other.orderList;
     this->customersList = std::move(other.customersList);
 }
+
+//Copy Assignment Operator
+Trainer& Trainer::operator=(const Trainer &other) {
+    if (this == &other)
+        return *this;
+    for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
+        delete this->customersList[i];
+    }
+    this->customersList = other.customersList;
+    this->orderList = other.orderList;
+    this->id = other.id;
+    this->capacity = other.capacity;
+    this->open = other.open;
+}
+
 
 
 
