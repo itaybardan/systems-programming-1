@@ -50,6 +50,8 @@ public:
     //Copy Assignment Operator
     Trainer& operator=(const Trainer &other);
 
+    //Move Assignment Operator
+    Trainer& operator=(const Trainer &&other);
 private:
     int id;
     int capacity;

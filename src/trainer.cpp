@@ -102,10 +102,10 @@ Trainer::~Trainer() {
 
 //Copy Constructor
 Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), open(other.open) {
-    for (Customer *c : other.customersList) {
+    for (Customer *c: other.customersList) {
         this->customersList.push_back(c->clone());
     }
-   this->orderList = other.orderList;
+    this->orderList = other.orderList;
 }
 
 //Move Constructor
@@ -118,21 +118,36 @@ Trainer::Trainer(Trainer &&other) {
 }
 
 //Copy Assignment Operator
-Trainer& Trainer::operator=(const Trainer &other) {
-    if (this == &other)
+Trainer &Trainer::operator=(const Trainer &other) {
+    if (this == &other) {
         return *this;
-    for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
-        delete this->customersList[i];
+    } else {
+        for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
+            delete this->customersList[i];
+        }
+        this->customersList = other.customersList;
+        this->orderList = other.orderList;
+        this->id = other.id;
+        this->capacity = other.capacity;
+        this->open = other.open;
     }
-    this->customersList = other.customersList;
-    this->orderList = other.orderList;
-    this->id = other.id;
-    this->capacity = other.capacity;
-    this->open = other.open;
+    return *this;
 }
 
-
-
+//Move assignment operator
+Trainer &Trainer::operator=(const Trainer &&other) {
+    if (this != &other) {
+        for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
+            delete this->customersList[i];
+        }
+        this->id = other.id;
+        this->capacity = other.capacity;
+        this->open = other.open;
+        this->customersList = other.customersList;
+        this->orderList = other.orderList;
+    }
+    return *this;
+}
 
 
 
