@@ -41,3 +41,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
 std::string HeavyMuscleCustomer::toString() const {
     return std::to_string(this->getId()) + " " + this->getName() + "\n";
 }
+
+Customer *HeavyMuscleCustomer::clone() {
+    return new HeavyMuscleCustomer(this->getName(),this->getId());
+}

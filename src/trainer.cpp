@@ -102,7 +102,9 @@ Trainer::~Trainer() {
 
 //Copy Constructor
 Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), open(other.open) {
-
+    for (Customer *c : other.customersList) {
+        this->customersList.push_back(c->clone());
+    }
 }
 
 

@@ -19,6 +19,10 @@ public:
 
     Customer(const Customer &other) = default;
 
+    virtual ~Customer() = default;
+
+    virtual Customer *clone()  =0;
+
 private:
     const std::string name;
     const int id;
@@ -33,7 +37,11 @@ public:
 
     std::string toString() const override;
 
-    SweatyCustomer(const SweatyCustomer& other) = default;
+
+    ~SweatyCustomer() = default;
+
+    Customer *clone() override;
+
 private:
 };
 
@@ -46,7 +54,10 @@ public:
 
     std::string toString() const override;
 
-    CheapCustomer(const CheapCustomer& other) = default;
+    ~CheapCustomer() = default;
+
+    Customer *clone() override;
+
 private:
 };
 
@@ -59,7 +70,11 @@ public:
 
     std::string toString() const override;
 
-    HeavyMuscleCustomer(const HeavyMuscleCustomer& other) = default;
+
+    ~HeavyMuscleCustomer() = default;
+
+    Customer *clone() override;
+
 private:
 };
 
@@ -72,7 +87,11 @@ public:
 
     std::string toString() const override;
 
-    FullBodyCustomer(const FullBodyCustomer& other) = default;
+
+    ~FullBodyCustomer() = default;
+
+    Customer *clone() override;
+
 private:
 };
 
