@@ -44,6 +44,9 @@ public:
     //Copy Constructor
     Trainer(const Trainer& other);
 
+    //Move Constructor
+    Trainer(Trainer&& other);
+
 private:
     int id;
     int capacity;

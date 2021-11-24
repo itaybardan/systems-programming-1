@@ -105,6 +105,15 @@ Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity),
     for (Customer *c : other.customersList) {
         this->customersList.push_back(c->clone());
     }
+   this->orderList = other.orderList;
+}
+
+//Move Constructor
+Trainer::Trainer(Trainer &&other) {
+    this->id = other.id;
+    this->open = other.open;
+    this->orderList = other.orderList;
+    this->customersList = std::move(other.customersList);
 }
 
 
