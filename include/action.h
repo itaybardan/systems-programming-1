@@ -49,9 +49,11 @@ public:
 
     static OpenTrainer *parseCommand(std::vector<std::string> &command, Studio *studio);
 
-    OpenTrainer(int id, std::vector<Customer *> &customersList, std::string arguments);
+    OpenTrainer(int id, std::vector<Customer *> &customersList);
 
     BaseAction *clone() const override;
+
+    void setArguments(std::string arguments);
 
     void act(Studio &studio) override;
 

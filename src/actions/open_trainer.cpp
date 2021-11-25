@@ -8,9 +8,7 @@ std::map<std::string, int> OpenTrainer::openTrainerParamNameToIndex = {{"trainer
                                                                        {"customersList", 2}};
 
 
-OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList,
-                         std::string arguments) : trainerId(id), customers(customersList),
-                                                  arguments(std::move(arguments)) {
+OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
 
 }
 
@@ -60,7 +58,9 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
                   [&](const std::string &piece) { argumentsLog += piece + " "; });
     argumentsLog.pop_back();
     if (t == nullptr) {
-        return new OpenTrainer(trainerIdParam, *(new std::vector<Customer *>), argumentsLog);
+        auto *op = new OpenTrainer(trainerIdParam, *(new std::vector<Customer *>));
+        op->setArguments(argumentsLog);
+        return op;
     }
     int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
 
@@ -93,7 +93,8 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
         placesLeft--;
         delete customerInfoVector;
     }
-    auto *openTrainer = new OpenTrainer(trainerIdParam, *customersVector, argumentsLog);
+    auto *openTrainer = new OpenTrainer(trainerIdParam, *customersVector);
+    openTrainer->setArguments(argumentsLog);
     delete customersInfo;
     delete customersVector;
     return openTrainer;
@@ -105,8 +106,13 @@ BaseAction *OpenTrainer::clone() const {
 //        customersList.push_back(c->clone());
 //    }
 
-    auto op = new OpenTrainer(this->trainerId, customersList, this->arguments);
+    auto *op = new OpenTrainer(this->trainerId, customersList);
+    op->setArguments(this->arguments);
     op->setStatus(this->getStatus());
     op->setErrMsg(this->getErrorMsg());
     return op;
+}
+
+void OpenTrainer::setArguments(std::string argumentsParam) {
+    this->arguments = std::move(argumentsParam);
 }
