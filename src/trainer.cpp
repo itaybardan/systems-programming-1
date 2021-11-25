@@ -127,8 +127,65 @@ Trainer *Trainer::clone() const {
     return t;
 }
 
+//Destructor
 Trainer::~Trainer() {
-    for (Customer *c: this->customersList) {
+    for (Customer *c: this->customersList)
         delete c;
+}
+
+//Copy Constructor
+Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), open(other.open),
+                                         totalSalary(other.totalSalary),
+                                         currentSessionSalary(other.currentSessionSalary) {
+    for (Customer *c: other.customersList) {
+        this->customersList.push_back(c->clone());
     }
+    this->orderList = other.orderList;
+}
+
+//Move Constructor
+Trainer::Trainer(Trainer &&other) {
+    this->id = other.id;
+    this->open = other.open;
+    this->capacity = other.capacity;
+    this->orderList = other.orderList;
+    this->customersList = std::move(other.customersList);
+    this->currentSessionSalary = other.currentSessionSalary;
+    this->totalSalary = other.totalSalary;
+}
+
+//Copy Assignment Operator
+Trainer &Trainer::operator=(const Trainer &other) {
+    if (this == &other) {
+        return *this;
+    } else {
+        for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
+            delete this->customersList[i];
+        }
+        this->customersList = other.customersList;
+        this->orderList = other.orderList;
+        this->id = other.id;
+        this->capacity = other.capacity;
+        this->open = other.open;
+        this->currentSessionSalary = other.currentSessionSalary;
+        this->totalSalary = other.totalSalary;
+    }
+    return *this;
+}
+
+//Move assignment operator
+Trainer &Trainer::operator=(const Trainer &&other) {
+    if (this != &other) {
+        for (int i = 0; i < static_cast<int>(customersList.size()); i++) {
+            delete this->customersList[i];
+        }
+        this->id = other.id;
+        this->capacity = other.capacity;
+        this->open = other.open;
+        this->customersList = other.customersList;
+        this->orderList = other.orderList;
+        this->currentSessionSalary = other.currentSessionSalary;
+        this->totalSalary = other.totalSalary;
+    }
+    return *this;
 }

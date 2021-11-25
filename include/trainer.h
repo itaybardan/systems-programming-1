@@ -42,7 +42,20 @@ public:
 
     Trainer *clone() const;
 
+    //Destructor
     virtual ~Trainer();
+
+    //Copy Constructor
+    Trainer(const Trainer& other);
+
+    //Move Constructor
+    Trainer(Trainer&& other);
+
+    //Copy Assignment Operator
+    Trainer& operator=(const Trainer &other);
+
+    //Move Assignment Operator
+    Trainer& operator=(const Trainer &&other);
 
 private:
     int id;
