@@ -36,12 +36,33 @@ public:
 
     int getSalary();
 
+    int getcurrentSessionSalary();
+
     bool isOpen();
+
+    Trainer *clone() const;
+
+    //Destructor
+    virtual ~Trainer();
+
+    //Copy Constructor
+    Trainer(const Trainer& other);
+
+    //Move Constructor
+    Trainer(Trainer&& other);
+
+    //Copy Assignment Operator
+    Trainer& operator=(const Trainer &other);
+
+    //Move Assignment Operator
+    Trainer& operator=(const Trainer &&other);
 
 private:
     int id;
     int capacity;
     bool open; //indicates if this trainer has a workout session in progress
+    int totalSalary;
+    int currentSessionSalary;
     std::vector<Customer *> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order for the trainer - (customer_id, Workout)
 };

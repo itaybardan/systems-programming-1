@@ -21,3 +21,7 @@ std::string SweatyCustomer::toString() const {
     return std::to_string(this->getId()) + " " + this->getName() + "\n";
 
 }
+
+Customer *SweatyCustomer::clone() const {
+    return new SweatyCustomer(this->getName(), this->getId());
+}

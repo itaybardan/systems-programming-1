@@ -7,6 +7,10 @@ BaseAction::BaseAction() : errorMsg(), status(ERROR) {
 
 }
 
+BaseAction::~BaseAction() {
+
+}
+
 ActionStatus BaseAction::getStatus() const {
     return this->status;
 }
@@ -27,11 +31,13 @@ std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
+void BaseAction::setStatus(ActionStatus as) {
+    this->status = as;
+}
 
-
-
-
-
+void BaseAction::setErrMsg(std::string errMsg) {
+    this->errorMsg = errMsg;
+}
 
 
 

@@ -1,5 +1,4 @@
 #include "../include/workout.h"
-#include "iostream"
 
 std::map<std::string, WorkoutType> Workout::WorkoutTypeResolver = {{"anaerobic", WorkoutType::ANAEROBIC},
                                                                    {"mixed",     WorkoutType::MIXED},
@@ -33,10 +32,7 @@ Workout &Workout::operator=(const Workout &other) {
     if (this == &other) {
         return *this;
     }
-    auto *workout = new Workout(other);
-    return *workout;
-}
-
-bool Workout::operator<(const Workout &other) const {
-    return this->price < other.price;
+    this->~Workout();
+    new(this) Workout(other);
+    return *this;
 }

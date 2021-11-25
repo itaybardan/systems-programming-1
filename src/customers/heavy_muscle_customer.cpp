@@ -31,7 +31,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     });
 
     std::vector<int> orders;
-    for (std::pair<int, int> orderPair : orderPairs) {
+    for (std::pair<int, int> orderPair: orderPairs) {
         orders.push_back(orderPair.first);
     }
     return orders;
@@ -40,4 +40,8 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
 
 std::string HeavyMuscleCustomer::toString() const {
     return std::to_string(this->getId()) + " " + this->getName() + "\n";
+}
+
+Customer *HeavyMuscleCustomer::clone() const {
+    return new CheapCustomer(this->getName(), this->getId());
 }

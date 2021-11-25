@@ -8,8 +8,12 @@ MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), 
 void MoveCustomer::act(Studio &studio) {
     Trainer *sourceTrainer = studio.getTrainer(this->srcTrainer);
     Trainer *destTrainer = studio.getTrainer(this->dstTrainer);
+    if (sourceTrainer == nullptr || destTrainer == nullptr) {
+        this->error("Cannot move customer");
+        return;
+    }
     Customer *customer = sourceTrainer->getCustomer(this->id);
-    if (customer == nullptr || sourceTrainer == nullptr || destTrainer == nullptr || !sourceTrainer->isOpen() ||
+    if (customer == nullptr || !sourceTrainer->isOpen() ||
         !destTrainer->isOpen() || destTrainer->getCapacity() == static_cast<int>(destTrainer->getCustomers().size())) {
         this->error("Cannot move customer");
         return;
@@ -25,9 +29,23 @@ void MoveCustomer::act(Studio &studio) {
 }
 
 std::string MoveCustomer::toString() const {
-    return std::string();
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "move " + std::to_string(this->srcTrainer) + " " + std::to_string(this->dstTrainer) + " " +
+               std::to_string(this->id) + " Completed";
+    } else {
+        return "move " + std::to_string(this->srcTrainer) + " " + std::to_string(this->dstTrainer) + " " +
+               std::to_string(this->id) + " Error: " + this->getErrorMsg();
+    }
 }
 
 MoveCustomer *MoveCustomer::parseCommand(std::vector<std::string> &command) {
     return new MoveCustomer(std::stoi(command.at(1)), std::stoi(command.at(2)), std::stoi(command.at(3)));
+}
+
+
+BaseAction *MoveCustomer::clone() const {
+    auto m = new MoveCustomer(this->srcTrainer, this->dstTrainer, this->id);
+    m->setErrMsg(this->getErrorMsg());
+    m->setStatus(this->getStatus());
+    return m;
 }

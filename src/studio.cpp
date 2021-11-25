@@ -8,7 +8,6 @@
 
 Studio::Studio(const std::string &configFilePath) : open(false) {
     std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> configOutput = parseConfigFile(configFilePath);
-
     this->trainers = *std::get<0>(configOutput);
     this->workout_options = *std::get<1>(configOutput);
     delete std::get<0>(configOutput);
@@ -37,6 +36,8 @@ void Studio::start() {
             baseAction = PrintTrainerStatus::parseCommand(*action);
         } else if (mainAction == "backup") { ;
             baseAction = BackupStudio::parseCommand(*action);
+        } else if (mainAction == "restore") { ;
+            baseAction = RestoreStudio::parseCommand(*action);
         } else if (mainAction == "log") { ;
             baseAction = PrintActionsLog::parseCommand(*action);
         } else if (mainAction == "workout_options") { ;
@@ -44,8 +45,10 @@ void Studio::start() {
         } else {
             std::cout << "Unknown command name: " << mainAction << std::endl;
             getline(std::cin, inputLine);
+            delete action;
             continue;
         }
+        delete action;
         baseAction->act(*this);
         this->actionsLog.push_back(baseAction);
         getline(std::cin, inputLine);
@@ -103,9 +106,9 @@ std::tuple<std::vector<Trainer *> *, std::vector<Workout> *> parseConfigFile(con
                 std::transform(workoutAttributes[1].begin(), workoutAttributes[1].end(),
                                workoutAttributes[1].begin(),
                                [](unsigned char c) { return std::tolower(c); });
-                workouts->push_back(*(new Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
-                                                  Workout::WorkoutTypeResolver.find(
-                                                          workoutAttributes[1])->second)));
+                workouts->push_back(Workout(id, workoutAttributes[0], std::stoi(workoutAttributes[2]),
+                                            Workout::WorkoutTypeResolver.find(
+                                                    workoutAttributes[1])->second));
                 id++;
             }
         }
@@ -138,7 +141,7 @@ std::vector<Workout> &Studio::getWorkoutOptions() {
 std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter) {
     size_t pos = 0;
     std::string substr;
-    auto *result = new std::vector<std::string>();
+    auto *result = new std::vector<std::string>;
     while ((pos = s.find(delimiter)) != std::string::npos) {
         substr = s.substr(0, pos);
         result->push_back(substr);
@@ -150,20 +153,58 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 
 Studio::Studio() {}
 
+Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_options),
+                                traineesAvailableId(other.traineesAvailableId) {
+
+    for (Trainer *t: other.trainers) {
+        this->trainers.push_back(t->clone());
+    }
+    for (BaseAction *ba: other.actionsLog) {
+        this->actionsLog.push_back(ba->clone());
+    }
+}
+
+Studio::Studio(Studio &&other) : open(other.open), trainers(other.trainers), workout_options(other.workout_options),
+                                 actionsLog(other.actionsLog), traineesAvailableId(other.traineesAvailableId) {
+}
+
 Studio::~Studio() {
+    this->clear();
+}
+
+void Studio::clear() {
     for (Trainer *t: this->trainers) {
         delete t;
+    }
+    for (BaseAction *ba: this->actionsLog) {
+        delete ba;
     }
 }
 
 Studio &Studio::operator=(const Studio &other) {
-    auto *s = new Studio();
-    return *s;
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
+    this->trainers = other.trainers;
+    this->workout_options = other.workout_options;
+    this->actionsLog = other.actionsLog;
+    this->open = other.open;
+    this->traineesAvailableId = other.traineesAvailableId;
+    return *this;
 }
 
 Studio &Studio::operator=(const Studio &&other) {
-    auto *s = new Studio();
-    return *s;
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
+    this->trainers = other.trainers;
+    this->workout_options = other.workout_options;
+    this->actionsLog = other.actionsLog;
+    this->open = other.open;
+    this->traineesAvailableId = other.traineesAvailableId;
+    return *this;
 }
 
 std::vector<Trainer *> Studio::getTrainers() {
@@ -176,4 +217,10 @@ int Studio::getTraineesAvailableId() {
 
 void Studio::increaseAvailableId() {
     this->traineesAvailableId++;
+}
+
+void Studio::clearPointers() {
+    this->trainers = std::vector<Trainer *>();
+    this->actionsLog = std::vector<BaseAction *>();
+
 }

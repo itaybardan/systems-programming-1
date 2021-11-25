@@ -8,7 +8,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
     std::vector<int> orders;
     int cheapestCardioWorkoutId = -1;
     int minPrice = INT8_MAX;
-    for (Workout workout : workout_options) {
+    for (Workout workout: workout_options) {
         if (workout.getType() == WorkoutType::CARDIO) {
             if (workout.getPrice() < minPrice) {
                 cheapestCardioWorkoutId = workout.getId();
@@ -33,7 +33,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
     minPrice = INT8_MAX;
     int cheapestAnaerobicId = -1;
-    for (Workout workout : workout_options) {
+    for (Workout workout: workout_options) {
         if (workout.getType() == WorkoutType::ANAEROBIC) {
             if (workout.getPrice() < minPrice) {
                 cheapestAnaerobicId = workout.getId();
@@ -48,4 +48,8 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
 std::string FullBodyCustomer::toString() const {
     return std::to_string(this->getId()) + " " + this->getName() + "\n";
+}
+
+Customer *FullBodyCustomer::clone() const {
+    return new FullBodyCustomer(this->getName(), this->getId());
 }

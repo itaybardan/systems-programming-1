@@ -16,9 +16,16 @@ void CloseAll::act(Studio &studio) {
 }
 
 std::string CloseAll::toString() const {
-    return std::string();
+    return "closeall";
 }
 
 CloseAll *CloseAll::parseCommand(std::vector<std::string> &command) {
     return new CloseAll;
+}
+
+BaseAction *CloseAll::clone() const {
+    auto ca = new CloseAll;
+    ca->setStatus(this->getStatus());
+    ca->setErrMsg(this->getErrorMsg());
+    return ca;
 }

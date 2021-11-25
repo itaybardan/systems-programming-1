@@ -15,9 +15,16 @@ void PrintWorkoutOptions::act(Studio &studio) {
 }
 
 std::string PrintWorkoutOptions::toString() const {
-    return std::string();
+    return "workout_options";
 }
 
 PrintWorkoutOptions *PrintWorkoutOptions::parseCommand(std::vector<std::string> &command) {
     return new PrintWorkoutOptions;
+}
+
+BaseAction *PrintWorkoutOptions::clone() const {
+    auto p = new PrintWorkoutOptions;
+    p->setErrMsg(this->getErrorMsg());
+    p->setStatus(this->getStatus());
+    return p;
 }

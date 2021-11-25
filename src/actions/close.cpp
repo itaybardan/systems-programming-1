@@ -11,7 +11,7 @@ void Close::act(Studio &studio) {
     //results in error if:
     //      1. the trainer does not exist.
     //      2. this trainer's workout session is not open.
-    if (trainerId > studio.getNumOfTrainers() || !temp_trainer->isOpen()) {
+    if (trainerId > studio.getNumOfTrainers() - 1 || !temp_trainer->isOpen()) {
         error("Trainer does not exist or is not open");
         return;
     }
@@ -23,11 +23,7 @@ void Close::act(Studio &studio) {
     temp_trainer->closeTrainer();
 
     //removing all of his customers.
-    int customer_id;
-    for (int i = 0; i < static_cast<int>(temp_trainer->getCustomers().size()); i++) {
-        customer_id = temp_trainer->getCustomers()[i]->getId();
-        temp_trainer->removeCustomer(customer_id);
-    }
+
 
     //at the end of this act:
     //      1. customers list of this trainer is empty.
@@ -39,9 +35,20 @@ void Close::act(Studio &studio) {
 }
 
 std::string Close::toString() const {
-    return std::string();
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "close " + std::to_string(this->trainerId) + " Completed";
+    } else {
+        return "close " + std::to_string(this->trainerId) + " Error: " + this->getErrorMsg();
+    }
 }
 
 Close *Close::parseCommand(std::vector<std::string> &command) {
     return new Close(std::stoi(command.at(1)));
+}
+
+BaseAction *Close::clone() const {
+    auto c = new Close(this->trainerId);
+    c->setErrMsg(this->getErrorMsg());
+    c->setStatus(this->getStatus());
+    return c;
 }

@@ -8,15 +8,22 @@ BackupStudio::BackupStudio() {
 }
 
 void BackupStudio::act(Studio &studio) {
-    // we need to implement rule of 5 in studio class in order for this line to work
-    *backup = studio;
+    delete backup;
+    backup = new Studio(studio);
     this->complete();
 }
 
 std::string BackupStudio::toString() const {
-    return std::string();
+    return "backup";
 }
 
 BackupStudio *BackupStudio::parseCommand(std::vector<std::string> &command) {
     return new BackupStudio;
+}
+
+BaseAction *BackupStudio::clone() const {
+    auto b = new BackupStudio;
+    b->setErrMsg(this->getErrorMsg());
+    b->setStatus(this->getStatus());
+    return b;
 }

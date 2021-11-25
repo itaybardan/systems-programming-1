@@ -1,5 +1,7 @@
 #include "../../include/action.h"
 #include "../../include/trainer.h"
+#include<algorithm>
+#include <utility>
 #include "../../include/studio.h"
 
 std::map<std::string, int> OpenTrainer::openTrainerParamNameToIndex = {{"trainerId",     1},
@@ -9,6 +11,7 @@ std::map<std::string, int> OpenTrainer::openTrainerParamNameToIndex = {{"trainer
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {
 
 }
+
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *t = studio.getTrainer(this->trainerId);
@@ -21,9 +24,10 @@ void OpenTrainer::act(Studio &studio) {
     int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
     for (Customer *customer: this->customers) {
         if (placesLeft <= 0) {
-            break;
+            delete customer;
+        } else {
+            t->addCustomer(customer);
         }
-        t->addCustomer(customer);
         placesLeft--;
     }
 
@@ -31,7 +35,11 @@ void OpenTrainer::act(Studio &studio) {
 }
 
 std::string OpenTrainer::toString() const {
-    return "open " + std::to_string(this->trainerId);
+    if (this->getStatus() == ActionStatus::COMPLETED) {
+        return "open " + std::to_string(this->trainerId) + " " + this->arguments + " Completed";
+    } else {
+        return "open " + std::to_string(this->trainerId) + " " + this->arguments + " Error: " + this->getErrorMsg();
+    }
 }
 
 /**
@@ -41,14 +49,25 @@ std::string OpenTrainer::toString() const {
 OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio *studio) {
     int trainerIdParam = std::stoi(command.at(OpenTrainer::openTrainerParamNameToIndex.find("trainerId")->second));
     Trainer *t = studio->getTrainer(trainerIdParam);
-    int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
 
     auto *customersInfo = new std::vector<std::string>(
             command.begin() + OpenTrainer::openTrainerParamNameToIndex.find("customersList")->second,
             command.end());
+    std::string argumentsLog;
+    std::for_each(customersInfo->begin(), customersInfo->end(),
+                  [&](const std::string &piece) { argumentsLog += piece + " "; });
+    argumentsLog.pop_back();
+    if (t == nullptr) {
+        auto *op = new OpenTrainer(trainerIdParam, *(new std::vector<Customer *>));
+        op->setArguments(argumentsLog);
+        return op;
+    }
+    int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
+
+
     auto *customersVector = new std::vector<Customer *>;
     for (std::string customerInfo: *customersInfo) {
-        if (t == nullptr || placesLeft <= 0 || t->isOpen()) {
+        if (placesLeft <= 0 || t->isOpen()) {
             break;
         }
         std::vector<std::string> *customerInfoVector = splitByDelimiter(customerInfo, ",");
@@ -74,8 +93,26 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
         placesLeft--;
         delete customerInfoVector;
     }
-    delete customersInfo;
     auto *openTrainer = new OpenTrainer(trainerIdParam, *customersVector);
+    openTrainer->setArguments(argumentsLog);
+    delete customersInfo;
     delete customersVector;
     return openTrainer;
+}
+
+BaseAction *OpenTrainer::clone() const {
+    std::vector<Customer *> customersList;
+//    for (Customer *c: this->customers) {
+//        customersList.push_back(c->clone());
+//    }
+
+    auto *op = new OpenTrainer(this->trainerId, customersList);
+    op->setArguments(this->arguments);
+    op->setStatus(this->getStatus());
+    op->setErrMsg(this->getErrorMsg());
+    return op;
+}
+
+void OpenTrainer::setArguments(std::string argumentsParam) {
+    this->arguments = std::move(argumentsParam);
 }
