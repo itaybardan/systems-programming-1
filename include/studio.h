@@ -15,7 +15,7 @@ public:
 
     explicit Studio(const std::string &configFilePath);
 
-    Studio(Studio &other);
+    Studio(const Studio &other);
 
     Studio(Studio &&other);
 
@@ -31,11 +31,13 @@ public:
 
     void increaseAvailableId();
 
+    void decreaseAvailableId();
+
     virtual ~Studio();
 
     virtual Studio &operator=(const Studio &other);
 
-    virtual Studio &operator=(const Studio &&other);
+    virtual Studio &operator=(Studio &&other);
 
     const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
 

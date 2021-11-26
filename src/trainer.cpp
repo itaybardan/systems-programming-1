@@ -148,7 +148,7 @@ Trainer::Trainer(Trainer &&other) {
     this->id = other.id;
     this->open = other.open;
     this->capacity = other.capacity;
-    this->orderList = other.orderList;
+    this->orderList = std::move(other.orderList);
     this->customersList = std::move(other.customersList);
     this->currentSessionSalary = other.currentSessionSalary;
     this->totalSalary = other.totalSalary;
@@ -182,8 +182,8 @@ Trainer &Trainer::operator=(const Trainer &&other) {
         this->id = other.id;
         this->capacity = other.capacity;
         this->open = other.open;
-        this->customersList = other.customersList;
-        this->orderList = other.orderList;
+        this->customersList = std::move(other.customersList);
+        this->orderList = std::move(other.orderList);
         this->currentSessionSalary = other.currentSessionSalary;
         this->totalSalary = other.totalSalary;
     }

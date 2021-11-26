@@ -153,8 +153,8 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 
 Studio::Studio() {}
 
-Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_options),
-                                traineesAvailableId(other.traineesAvailableId) {
+Studio::Studio(const Studio &other) : open(other.open), workout_options(other.workout_options),
+                                      traineesAvailableId(other.traineesAvailableId) {
 
     for (Trainer *t: other.trainers) {
         this->trainers.push_back(t->clone());
@@ -164,8 +164,10 @@ Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_
     }
 }
 
-Studio::Studio(Studio &&other) : open(other.open), trainers(other.trainers), workout_options(other.workout_options),
-                                 actionsLog(other.actionsLog), traineesAvailableId(other.traineesAvailableId) {
+Studio::Studio(Studio &&other) : open(other.open), trainers(std::move(other.trainers)),
+                                 workout_options(other.workout_options),
+                                 actionsLog(std::move(other.actionsLog)),
+                                 traineesAvailableId(other.traineesAvailableId) {
 }
 
 Studio::~Studio() {
@@ -194,14 +196,14 @@ Studio &Studio::operator=(const Studio &other) {
     return *this;
 }
 
-Studio &Studio::operator=(const Studio &&other) {
+Studio &Studio::operator=(Studio &&other) {
     if (this == &other) {
         return *this;
     }
     this->clear();
-    this->trainers = other.trainers;
+    this->trainers = std::move(other.trainers);
     this->workout_options = other.workout_options;
-    this->actionsLog = other.actionsLog;
+    this->actionsLog = std::move(other.actionsLog);
     this->open = other.open;
     this->traineesAvailableId = other.traineesAvailableId;
     return *this;
@@ -223,4 +225,8 @@ void Studio::clearPointers() {
     this->trainers = std::vector<Trainer *>();
     this->actionsLog = std::vector<BaseAction *>();
 
+}
+
+void Studio::decreaseAvailableId() {
+    this->traineesAvailableId--;
 }
