@@ -164,8 +164,10 @@ Studio::Studio(const Studio &other) : open(other.open), workout_options(other.wo
     }
 }
 
-Studio::Studio(Studio &&other) : open(other.open), trainers(other.trainers), workout_options(other.workout_options),
-                                 actionsLog(other.actionsLog), traineesAvailableId(other.traineesAvailableId) {
+Studio::Studio(Studio &&other) : open(other.open), trainers(std::move(other.trainers)),
+                                 workout_options(other.workout_options),
+                                 actionsLog(std::move(other.actionsLog)),
+                                 traineesAvailableId(other.traineesAvailableId) {
 }
 
 Studio::~Studio() {
@@ -199,9 +201,9 @@ Studio &Studio::operator=(Studio &&other) {
         return *this;
     }
     this->clear();
-    this->trainers = other.trainers;
+    this->trainers = std::move(other.trainers);
     this->workout_options = other.workout_options;
-    this->actionsLog = other.actionsLog;
+    this->actionsLog = std::move(other.actionsLog);
     this->open = other.open;
     this->traineesAvailableId = other.traineesAvailableId;
     return *this;
