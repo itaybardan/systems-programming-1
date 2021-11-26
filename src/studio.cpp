@@ -153,8 +153,8 @@ std::vector<std::string> *splitByDelimiter(std::string &s, std::string delimiter
 
 Studio::Studio() {}
 
-Studio::Studio(Studio &other) : open(other.open), workout_options(other.workout_options),
-                                traineesAvailableId(other.traineesAvailableId) {
+Studio::Studio(const Studio &other) : open(other.open), workout_options(other.workout_options),
+                                      traineesAvailableId(other.traineesAvailableId) {
 
     for (Trainer *t: other.trainers) {
         this->trainers.push_back(t->clone());
@@ -194,7 +194,7 @@ Studio &Studio::operator=(const Studio &other) {
     return *this;
 }
 
-Studio &Studio::operator=(const Studio &&other) {
+Studio &Studio::operator=(Studio &&other) {
     if (this == &other) {
         return *this;
     }
@@ -223,4 +223,8 @@ void Studio::clearPointers() {
     this->trainers = std::vector<Trainer *>();
     this->actionsLog = std::vector<BaseAction *>();
 
+}
+
+void Studio::decreaseAvailableId() {
+    this->traineesAvailableId--;
 }

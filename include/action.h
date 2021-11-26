@@ -51,9 +51,21 @@ public:
 
     OpenTrainer(int id, std::vector<Customer *> &customersList);
 
+    OpenTrainer(const OpenTrainer &other);
+
+    OpenTrainer(OpenTrainer &&other) noexcept;
+
+    virtual ~OpenTrainer();
+
+    OpenTrainer &operator=(const OpenTrainer &other);
+
+    OpenTrainer &operator=(OpenTrainer &&other) noexcept;
+
     BaseAction *clone() const override;
 
     void setArguments(std::string arguments);
+
+    void clear();
 
     void act(Studio &studio) override;
 

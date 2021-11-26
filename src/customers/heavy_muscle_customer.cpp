@@ -43,5 +43,5 @@ std::string HeavyMuscleCustomer::toString() const {
 }
 
 Customer *HeavyMuscleCustomer::clone() const {
-    return new CheapCustomer(this->getName(), this->getId());
+    return new HeavyMuscleCustomer(this->getName(), this->getId());
 }

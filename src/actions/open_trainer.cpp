@@ -23,10 +23,11 @@ void OpenTrainer::act(Studio &studio) {
     t->openTrainer();
     int placesLeft = t->getCapacity() - static_cast<int>(t->getCustomers().size());
     for (Customer *customer: this->customers) {
-        if (placesLeft <= 0) {
-            delete customer;
-        } else {
-            t->addCustomer(customer);
+        if (placesLeft > 0) {
+            t->addCustomer(customer->clone());
+        }
+        else {
+            studio.decreaseAvailableId();
         }
         placesLeft--;
     }
@@ -102,9 +103,11 @@ OpenTrainer *OpenTrainer::parseCommand(std::vector<std::string> &command, Studio
 
 BaseAction *OpenTrainer::clone() const {
     std::vector<Customer *> customersList;
-//    for (Customer *c: this->customers) {
-//        customersList.push_back(c->clone());
-//    }
+    // We use clone on OpenTrainer only for actionLog, in that matter we don't need to store the customers.
+    // just maintain the toString method
+    for (Customer *c: this->customers) {
+        customersList.push_back(c->clone());
+    }
 
     auto *op = new OpenTrainer(this->trainerId, customersList);
     op->setArguments(this->arguments);
@@ -115,4 +118,48 @@ BaseAction *OpenTrainer::clone() const {
 
 void OpenTrainer::setArguments(std::string argumentsParam) {
     this->arguments = std::move(argumentsParam);
+}
+
+
+OpenTrainer::OpenTrainer(const OpenTrainer &other) : BaseAction(other), trainerId(other.trainerId) {
+    for (Customer *c: other.customers) {
+        this->customers.push_back(c->clone());
+    }
+}
+
+OpenTrainer::OpenTrainer(OpenTrainer &&other) noexcept: BaseAction(other), trainerId(other.trainerId),
+                                                        customers(std::move(other.customers)) {
+
+}
+
+OpenTrainer::~OpenTrainer() {
+    for (Customer *c: this->customers) {
+        delete c;
+    }
+}
+
+void OpenTrainer::clear() {
+    for (Customer *c: this->customers) {
+        delete c;
+    }
+}
+
+OpenTrainer &OpenTrainer::operator=(const OpenTrainer &other) {
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
+    // because of const constraint, create a copy of open trainer
+    *this = OpenTrainer(other);
+    return *this;
+}
+
+OpenTrainer &OpenTrainer::operator=(OpenTrainer &&other) noexcept {
+    if (this == &other) {
+        return *this;
+    }
+    this->clear();
+    // because of const constraint, create a copy of open trainer
+    *this = OpenTrainer(other);
+    return *this;
 }
